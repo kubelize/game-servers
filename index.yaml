@@ -1,0 +1,25 @@
+apiVersion: v1
+entries:
+  minecraft-server:
+  - apiVersion: v2
+    appVersion: 2024.2.2
+    created: "2024-02-23T14:05:44.040555483+01:00"
+    description: A minecraft-server helm chart for Kubernetes
+    digest: 4c2d5f3715a3fbc63ed54b46a11520934b3dab38ee2d0aa792213f54f33f6c8e
+    name: minecraft-server
+    type: application
+    urls:
+    - https://github.com/kubelize/game-servers/releases/download/minecraft-server-0.1.1/minecraft-server-0.1.1.tgz
+    version: 0.1.1
+  palserver:
+  - apiVersion: v2
+    appVersion: 0.0.6
+    created: "2024-02-23T14:05:44.04078833+01:00"
+    description: A Helm chart for Kubernetes
+    digest: efd42aa8d29778b1f03df3805b04daacf3a85ae6624a540196e083a8aa8c3f99
+    name: palserver
+    type: application
+    urls:
+    - https://github.com/kubelize/game-servers/releases/download/palserver-0.1.2/palserver-0.1.2.tgz
+    version: 0.1.2
+generated: "2024-02-23T14:05:44.039222231+01:00"
