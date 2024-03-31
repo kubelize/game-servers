@@ -34,6 +34,13 @@ spec:
           claimName: {{ .Values.storage.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: set-ownership
+          image: busybox
+          command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common/PalServer"]
+          volumeMounts:
+          - mountPath: /home/steam/Steam/steamapps/common/PalServer
+            name: data
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
