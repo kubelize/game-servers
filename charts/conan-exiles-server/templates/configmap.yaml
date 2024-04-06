@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: runserver
+  namespace: {{ .Values.runserver.namespace }}
+data:
+  run_server.sh: |-
+  {{- required "A valid .Values.runserver.config entry is required!" (tpl .Values.runserver.config .) | nindent 4 }}
+
