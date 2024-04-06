@@ -94,7 +94,7 @@ volumes:
 
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts:
-  - mountPath: /home/steam/Steam/steamapps/common/PalServer
+  - mountPath: /home/steam/Steam/steamapps/common
     name: data
   - mountPath: /usr/local/bin/run_server.sh
     subPath: run_server.sh

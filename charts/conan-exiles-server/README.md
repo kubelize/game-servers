@@ -47,7 +47,7 @@ A Helm chart for Kubernetes
 | storage.name | string | `"conan-exiles-data"` |  |
 | storage.storageClassName | string | `"longhorn"` |  |
 | tolerations | list | `[]` |  |
-| volumeMounts[0].mountPath | string | `"/home/steam/Steam/steamapps/common/PalServer"` |  |
+| volumeMounts[0].mountPath | string | `"/home/steam/Steam/steamapps/common"` |  |
 | volumeMounts[0].name | string | `"data"` |  |
 | volumeMounts[1].mountPath | string | `"/usr/local/bin/run_server.sh"` |  |
 | volumeMounts[1].name | string | `"run-cm"` |  |
