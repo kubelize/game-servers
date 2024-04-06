@@ -35,7 +35,7 @@ spec:
           image: busybox
           command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common/'Conan Exiles Dedicated Server'"]
           volumeMounts:
-          - mountPath: /home/steam/Steam/steamapps/common/'Conan Exiles Dedicated Server'
+          - mountPath: /home/steam/Steam/steamapps/common
             name: data
       containers:
         - name: {{ .Chart.Name }}
