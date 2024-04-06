@@ -33,7 +33,7 @@ spec:
       initContainers:
         - name: set-ownership
           image: busybox
-          command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common/'Conan Exiles Dedicated Server'"]
+          command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common"]
           volumeMounts:
           - mountPath: /home/steam/Steam/steamapps/common
             name: data
