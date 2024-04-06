@@ -33,9 +33,9 @@ spec:
       initContainers:
         - name: set-ownership
           image: busybox
-          command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common"]
+          command: ["chown", "-R", "1000:1000", "/home/steam/Steam"]
           volumeMounts:
-          - mountPath: /home/steam/Steam/steamapps/common
+          - mountPath: /home/steam/Steam
             name: data
       containers:
         - name: {{ .Chart.Name }}
