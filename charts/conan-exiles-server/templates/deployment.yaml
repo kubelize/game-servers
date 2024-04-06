@@ -64,6 +64,8 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
           volumeMounts:
+          - mountPath: /home/steam/Steam/steamapps/common
+            name: data
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
