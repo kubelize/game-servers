@@ -4,12 +4,24 @@ games:
     dockerfile_ext: sdtd
     base: ln
     maintainer: "kubelize@kubelize.com"
-    additional_dependencies:
-      - iputils-ping
-      - netcat
+    additional_dependencies: []
+      # - iputils-ping
+      # - netcat
   - name: palworld
     steam_app_id: 2394010
     dockerfile_ext: pw
     base: ln
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies: []
+  - name: valheim
+    steam_app_id: 896660
+    dockerfile_ext: vh
+    base: ln
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies: []
+  - name: conan_exiles
+    steam_app_id: 443030
+    dockerfile_ext: ce
+    base: we
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []

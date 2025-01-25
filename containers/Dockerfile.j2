@@ -15,9 +15,17 @@ RUN apt update && apt upgrade -y && \
     apt install --no-install-recommends --no-install-suggests -y \
     {{range $index, $dep := .AdditionalDeps}}{{if $index}} \
     {{end}}{{$dep}}{{end}}
+
+RUN apt remove --purge -y curl && \
+    apt autoremove -y && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 {{end}}
 COPY /server-configs/{{ .GameName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY /server-configs/{{ .GameName }}/kubelize/ /home/steam/steamcmd/kubelize/
+COPY /server-configs/{{ .GameName }}/kubelize/ /home/steam/kubelize/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chown -R steam:steam /home/steam/kubelize/
 
 WORKDIR /home/steam/steamcmd
 USER steam

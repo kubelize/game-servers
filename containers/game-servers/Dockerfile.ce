@@ -1,17 +1,17 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.1.0-baseln
+FROM kubelize/game-servers:0.1.0-basewe
 
 # Set game name
-LABEL game="seven_days_to_die"
+LABEL game="conan_exiles"
 
 # Set Maintainer
 LABEL maintainer="kubelize@kubelize.com"
 
 # Set Steam App ID
-LABEL steam_app_id="294420"
+LABEL steam_app_id="443030"
 
-COPY /server-configs/seven_days_to_die/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY /server-configs/seven_days_to_die/kubelize/ /home/steam/kubelize/
+COPY /server-configs/conan_exiles/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /server-configs/conan_exiles/kubelize/ /home/steam/kubelize/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R steam:steam /home/steam/kubelize/
