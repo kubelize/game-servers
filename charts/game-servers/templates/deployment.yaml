@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "palserver.fullname" . }}
+  name: {{ include "game-servers.fullname" . }}
   labels:
-    {{- include "palserver.labels" . | nindent 4 }}
+    {{- include "game-servers.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "palserver.selectorLabels" . | nindent 6 }}
+      {{- include "game-servers.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "palserver.labels" . | nindent 8 }}
+        {{- include "game-servers.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,36 +27,23 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "palserver.serviceAccountName" . }}
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: {{ .Values.storage.name }}
+      serviceAccountName: {{ include "game-servers.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      initContainers:
-        - name: set-ownership
-          image: busybox
-          command: ["chown", "-R", "1000:1000", "/home/steam/Steam/steamapps/common/PalServer"]
-          volumeMounts:
-          - mountPath: /home/steam/Steam/steamapps/common/PalServer
-            name: data
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          volumeMounts:
-            - name: data
-              mountPath: /home/steam/Steam/steamapps/common/PalServer
           ports:
-            - name: gameport
-              containerPort: 8211
-              protocol: UDP
-            - name: rconport
-              containerPort: 25575
+            - name: http
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}

@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "palserver.name" -}}
+{{- define "game-servers.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "palserver.fullname" -}}
+{{- define "game-servers.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "palserver.chart" -}}
+{{- define "game-servers.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "palserver.labels" -}}
-helm.sh/chart: {{ include "palserver.chart" . }}
-{{ include "palserver.selectorLabels" . }}
+{{- define "game-servers.labels" -}}
+helm.sh/chart: {{ include "game-servers.chart" . }}
+{{ include "game-servers.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "palserver.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "palserver.name" . }}
+{{- define "game-servers.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "game-servers.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "palserver.serviceAccountName" -}}
+{{- define "game-servers.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "palserver.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "game-servers.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

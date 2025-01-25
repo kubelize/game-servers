@@ -1,2 +1,1 @@
-# game-servers
-Dockerfiles and Helm-Charts for dedicated game-servers
+# Work in progress
