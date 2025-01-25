@@ -1,0 +1,25 @@
+# Base Dockerfile
+FROM {{.BaseDockerfile}}
+
+# Set game name
+LABEL game="{{.GameName}}"
+
+# Set Maintainer
+LABEL maintainer="{{.Maintainer}}"
+
+# Set Steam App ID
+LABEL steam_app_id="{{.SteamAppID}}"
+{{if .AdditionalDeps}}
+# Install dependencies
+RUN apt update && apt upgrade -y && \
+    apt install --no-install-recommends --no-install-suggests -y \
+    {{range $index, $dep := .AdditionalDeps}}{{if $index}} \
+    {{end}}{{$dep}}{{end}}
+{{end}}
+COPY /server-configs/{{ .GameName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /server-configs/{{ .GameName }}/kubelize/ /home/steam/steamcmd/kubelize/
+
+WORKDIR /home/steam/steamcmd
+USER steam
+
+ENTRYPOINT ["entrypoint.sh"]

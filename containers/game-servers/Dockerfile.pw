@@ -1,0 +1,19 @@
+# Base Dockerfile
+FROM Dockerfile.ln
+
+# Set game name
+LABEL game="palworld"
+
+# Set Maintainer
+LABEL maintainer="kubelize@kubelize.com"
+
+# Set Steam App ID
+LABEL steam_app_id="2394010"
+
+COPY /server-configs/palworld/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /server-configs/palworld/kubelize/ /home/steam/steamcmd/kubelize/
+
+WORKDIR /home/steam/steamcmd
+USER steam
+
+ENTRYPOINT ["entrypoint.sh"]

@@ -1,0 +1,15 @@
+games:
+  - name: seven_days_to_die
+    steam_app_id: 294420
+    dockerfile_ext: sdtd
+    base: ln
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies:
+      - iputils-ping
+      - netcat
+  - name: palworld
+    steam_app_id: 2394010
+    dockerfile_ext: pw
+    base: ln
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies: []

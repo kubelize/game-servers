@@ -1,0 +1,25 @@
+# Base Dockerfile
+FROM Dockerfile.ln
+
+# Set game name
+LABEL game="seven_days_to_die"
+
+# Set Maintainer
+LABEL maintainer="kubelize@kubelize.com"
+
+# Set Steam App ID
+LABEL steam_app_id="294420"
+
+# Install dependencies
+RUN apt update && apt upgrade -y && \
+    apt install --no-install-recommends --no-install-suggests -y \
+    iputils-ping \
+    netcat
+
+COPY /server-configs/seven_days_to_die/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /server-configs/seven_days_to_die/kubelize/ /home/steam/steamcmd/kubelize/
+
+WORKDIR /home/steam/steamcmd
+USER steam
+
+ENTRYPOINT ["entrypoint.sh"]
