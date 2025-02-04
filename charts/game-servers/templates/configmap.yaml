@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+data:
+  config-values.yaml: |
+    ServerName: "{{ .Values.serverConfig.ServerName }}"
+    ServerDescription: "{{ .Values.serverConfig.ServerDescription }}"
+    ServerWebsiteURL: "{{ .Values.serverConfig.ServerWebsiteURL }}"
+    ServerLoginConfirmationText: "{{ .Values.serverConfig.ServerLoginConfirmationText }}"
+    Region: "{{ .Values.serverConfig.Region }}"
+    Language: "{{ .Values.serverConfig.Language }}"
+    {{- $password := (lookup "v1" "Secret" .Release.Namespace "server-password-secret").data.ServerPassword | b64dec }}
+    {{- if $password }}
+    ServerPassword: "{{ $password }}"
+    {{- end }}

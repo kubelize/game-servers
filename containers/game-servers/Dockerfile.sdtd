@@ -11,7 +11,7 @@ LABEL maintainer="kubelize@kubelize.com"
 LABEL steam_app_id="294420"
 
 COPY /server-configs/seven_days_to_die/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY /server-configs/seven_days_to_die/kubelize/ /home/steam/kubelize/
+COPY /server-configs/seven_days_to_die/kubelize/ /config/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R steam:steam /home/steam/kubelize/

@@ -22,7 +22,7 @@ RUN apt remove --purge -y curl && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 {{end}}
 COPY /server-configs/{{ .GameName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY /server-configs/{{ .GameName }}/kubelize/ /home/steam/kubelize/
+COPY /server-configs/{{ .GameName }}/kubelize/ /config/serverconfig.template
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R steam:steam /home/steam/kubelize/

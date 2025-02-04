@@ -7,7 +7,10 @@ RUN apt update && apt upgrade -y && \
     lib32gcc-s1 \
     curl \
     nano \
+    yq \
     locales && \
+    curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -xz -C /usr/local/bin && \
+    chmod +x /usr/local/bin/dockerize && \
     adduser --disabled-password --gecos "" steam && \
     su steam -c 'cd && \
         mkdir -p /home/steam/steamcmd && \

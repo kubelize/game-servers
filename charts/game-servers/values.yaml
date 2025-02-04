@@ -7,11 +7,11 @@ replicaCount: 1
 
 # This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
 image:
-  repository: nginx
+  repository: kubelize/game-servers
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "0.1.3-sdtd"
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -19,7 +19,118 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-#This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
+# Server Configuration
+serverConfig:
+
+  # Details
+  ServerName: "My Game Server"
+  ServerDescription: "Managed by kubelize"
+  ServerWebsiteURL: ""
+  ServerLoginConfirmationText: ""
+  Region: "Europe"
+  Language: "English"
+
+  # Networking
+  ServerPort: "26900"
+  ServerVisibility: "2"
+  ServerDisabledNetworkProtocols: "SteamNetworking"
+  ServerMaxWorldTransferSpeed: "512"
+
+  # Player Slots
+  ServerMaxPlayerCount: "8"
+  ServerReservedSlots: "0"
+  ServerReservedSlotsPermission: "100"
+  ServerAdminSlots: "0"
+  ServerAdminSlotsPermission: "0"
+
+  # Web Interface
+  WebDashboardeEnabled: "false"
+  WebDashboardPort: "8080"
+  WebDashboardUrl: ""
+  EnableMapRendering: "false"
+  TelnetEnabled: "true"
+  TelnetPort: "8081"
+  TelnetFailedLoginLimit: ""
+  TelnetFailedLoginsBlocktime: "10"
+  TerminalWindowEnabled: "10"
+
+  # Various Settings
+  ServerAllowCrossplay: "false"
+  EACEnabled: "true"
+  IngoreEOSSanctions: "false"
+  HideCommandExecutionLog: "0"
+  MaxUncoveredMapChunksPerPlayer: "131072"
+  PersistentPlayerProfiles: "false"
+  MaxChunkAge: "-1"
+  SaveDataLimit: "-1"
+
+  # World
+  GameWorld: "Navezgane"
+  WorldGenSeed: "asdf"
+  WorldGenSize: "6144"
+  GameName: "My Game"
+  GameMode: "GameModeSurvival"
+
+  # Difficulty
+  GameDifficulty: "1"
+  BlockDamagePlayer: "100"
+  BlockDamageAI: "100"
+  BlockDamageAIBM: "100"
+  XPMultiplier: "100"
+  PlayerSafeZoneLevel: "5"
+  PlayerSafeZoneHours: "5"
+
+  # Modes
+  CreativeMode: "false"
+  DayNightLength: "60"
+  DayLightLength: 18"
+  DeathPenalty: "1"
+  DropOnDeath: "1"
+  DropOnQuit: "0"
+  BedrollDeadZoneSize: "15"
+  BedrollExpiryTime: "45"
+  TwitchServerPermission: "90"
+  TwitchBloodMoonAllowed: "false"
+  QuestProgressionDailyLimit: "4"
+
+  # AI Settings
+  EnemySpawnMode: "true"
+  EnemyDifficulty: "0"
+  ZombieFeralSense: "0"
+  ZombieMove: "0"
+  ZombieMoveNight: "3"
+  ZombieFeralMove: "3"
+  ZombieBMMove: "3"
+  ZombieBloodFrequecy: "7"
+  BloodMoonRange: "0"
+  BloodMoonWarning: "8"
+  BloodMoonEnemyCount: "8"
+
+  # Loot
+  LootAbundance: "100"
+  LootRespawnDays: "7"
+  AirDropFrequency: "72"
+  AirDropMarker: "true"
+
+  # Multiplayer
+  PartySharedKillRange: "100"
+  PlayerKillingMode: "3"
+
+  # Land Claim
+  LandClaimCount: "3"
+  LandClaimSize: "41"
+  LandClaimDeadZone: "30"
+  LandClaimExpiryTime: "7"
+  LandClaimDecayMode: "0"
+  LandClaimOnlineDurabilityModifier: "4"
+  LandClaimOfflineDurabilityModifier: "4"
+  LandClaimOfflineDelay: "0"
+  DynamicMeshEnabled: "true"
+  DynamicMeshLandClaimOnly: "true"
+  DynamicMeshLandClaimBuffer: "3"
+  DynamicMeshMaxItemCache: "3"
+
+# This section builds out the service account more information can be found here: https://kubernetes.io/docs/concepts/security/service-accounts/
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -94,14 +205,6 @@ readinessProbe:
   httpGet:
     path: /
     port: http
-
-#This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
 volumes: []
