@@ -4,12 +4,91 @@ metadata:
   name: server-config
 data:
   config-values.yaml: |
+
+    # Details
     ServerName: "{{ .Values.serverConfig.ServerName }}"
     ServerDescription: "{{ .Values.serverConfig.ServerDescription }}"
     ServerWebsiteURL: "{{ .Values.serverConfig.ServerWebsiteURL }}"
     ServerLoginConfirmationText: "{{ .Values.serverConfig.ServerLoginConfirmationText }}"
     Region: "{{ .Values.serverConfig.Region }}"
     Language: "{{ .Values.serverConfig.Language }}"
+
+    # Networking
+    ServerPort: "{{ .Values.serverConfig.ServerPort }}"
+    ServerVisibility: "{{ .Values.serverConfig.ServerVisibility }}"
+    ServerDisabledNetworkProtocols: "{{ .Values.serverConfig.ServerDisabledNetworkProtocols }}"
+    ServerMaxWorldTransferSpeed: "{{ .Values.serverConfig.ServerMaxWorldTransferSpeed }}"
+
+    # Player Slots
+    ServerMaxPlayerCount: "{{ .Values.serverConfig.ServerMaxPlayerCount }}"
+    ServerReservedSlots: "{{ .Values.serverConfig.ServerReservedSlots }}"
+    ServerReservedSlotsPermission: "{{ .Values.serverConfig.ServerReservedSlotsPermission }}"
+    ServerAdminSlots: "{{ .Values.serverConfig.ServerAdminSlots }}" 
+    ServerAdminSlotsPermission: "{{ .Values.serverConfig.ServerAdminSlotsPermission }}"
+
+    # Web Interface
+    WebDashboardeEnabled: "{{ .Values.serverConfig.WebDashboardeEnabled }}"
+    WebDashboardPort: "{{ .Values.serverConfig.WebDashboardPort }}"
+    WebDashboardUrl: "{{ .Values.serverConfig.WebDashboardUrl }}"
+    EnableMapRendering: "{{ .Values.serverConfig.EnableMapRendering }}"
+    TelnetEnabled: "{{ .Values.serverConfig.TelnetEnabled }}"
+    TelnetPort: "{{ .Values.serverConfig.TelnetPort }}"
+    TelnetFailedLoginLimit: "{{ .Values.serverConfig.TelnetFailedLoginLimit }}"
+    TelnetFailedLoginsBlocktime: "{{ .Values.serverConfig.TelnetFailedLoginsBlocktime }}"
+    TerminalWindowEnabled: "{{ .Values.serverConfig.TerminalWindowEnabled }}"
+
+    # Various Settings
+    ServerAllowCrossplay: "{{ .Values.serverConfig.ServerAllowCrossplay }}"
+    EACEnabled: "{{ .Values.serverConfig.EACEnabled }}"
+    IngoreEOSSanctions: "{{ .Values.serverConfig.IngoreEOSSanctions }}"
+    HideCommandExecutionLog: "{{ .Values.serverConfig.HideCommandExecutionLog }}"
+    MaxUncoveredMapChunksPerPlayer: "{{ .Values.serverConfig.MaxUncoveredMapChunksPerPlayer }}"
+    PersistentPlayerProfiles: "{{ .Values.serverConfig.PersistentPlayerProfiles }}"
+    MaxChunkAge: "{{ .Values.serverConfig.MaxChunkAge }}"
+    SaveDataLimit: "{{ .Values.serverConfig.SaveDataLimit }}"
+    ServerMaxAllowedViewDistance: "{{ .Values.serverConfig.ServerMaxAllowedViewDistance }}"
+    MaxQueuedMeshLayers: "{{ .Values.serverConfig.MaxQueuedMeshLayers }}"
+
+    # World
+    GameWorld: "{{ .Values.serverConfig.GameWorld }}"
+    WorldGenSeed: "{{ .Values.serverConfig.WorldGenSeed }}"
+    WorldGenSize: "{{ .Values.serverConfig.WorldGenSize }}"
+    GameName: "{{ .Values.serverConfig.GameName }}"
+    GameMode: "{{ .Values.serverConfig.GameMode }}"
+
+    # Difficulty
+    GameDifficulty: "{{ .Values.serverConfig.GameDifficulty }}"
+    BlockDamagePlayer: "{{ .Values.serverConfig.BlockDamagePlayer }}"
+    BlockDamageAI: "{{ .Values.serverConfig.BlockDamageAI }}"
+    BlockDamageAIBM: "{{ .Values.serverConfig.BlockDamageAIBM }}"
+    XPMultiplier: "{{ .Values.serverConfig.XPMultiplier }}"
+    PlayerSafeZoneLevel: "{{ .Values.serverConfig.PlayerSafeZoneLevel }}"
+    PlayerSafeZoneHours: "{{ .Values.serverConfig.PlayerSafeZoneHours }}"
+
+    # Modes
+    CreativeMode: "{{ .Values.serverConfig.CreativeMode }}"
+    DayNightLength: "{{ .Values.serverConfig.DayNightLength }}"
+    DayLightLength: "{{ .Values.serverConfig.DayLightLength }}"
+    DeathPenalty: "{{ .Values.serverConfig.DeathPenalty }}"
+    DropOnDeath: "{{ .Values.serverConfig.DropOnDeath }}"
+    DropOnQuit: "{{ .Values.serverConfig.DropOnQuit }}"
+    BedrollDeadZoneSize: "{{ .Values.serverConfig.BedrollDeadZoneSize }}"
+    BedrollExpiryTime: "{{ .Values.serverConfig.BedrollExpiryTime }}"
+    TwitchServerPermission: "{{ .Values.serverConfig.TwitchServerPermission }}"
+    TwitchBloodMoonAllowed: "{{ .Values.serverConfig.TwitchBloodMoonAllowed }}"
+    QuestProgressDailyLimit: "{{ .Values.serverConfig.QuestProgressDailyLimit }}"
+
+    # AI Settings
+    
+
+
+
+
+
+
+
+
+
     {{- $password := (lookup "v1" "Secret" .Release.Namespace "server-password-secret").data.ServerPassword | b64dec }}
     {{- if $password }}
     ServerPassword: "{{ $password }}"

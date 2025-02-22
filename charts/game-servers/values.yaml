@@ -63,6 +63,8 @@ serverConfig:
   PersistentPlayerProfiles: "false"
   MaxChunkAge: "-1"
   SaveDataLimit: "-1"
+  ServerMaxAllowedViewDistance: "12"
+  MaxQueuedMeshLayers: "1000"
 
   # World
   GameWorld: "Navezgane"
@@ -94,6 +96,8 @@ serverConfig:
   QuestProgressionDailyLimit: "4"
 
   # AI Settings
+  MaxSpawnedZombies: "64"
+  MaxSpawnedAnimals: "50"
   EnemySpawnMode: "true"
   EnemyDifficulty: "0"
   ZombieFeralSense: "0"
@@ -101,7 +105,7 @@ serverConfig:
   ZombieMoveNight: "3"
   ZombieFeralMove: "3"
   ZombieBMMove: "3"
-  ZombieBloodFrequecy: "7"
+  BloodMoonFrequecy: "7"
   BloodMoonRange: "0"
   BloodMoonWarning: "8"
   BloodMoonEnemyCount: "8"
