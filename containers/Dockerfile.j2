@@ -2,13 +2,13 @@
 FROM {{.BaseDockerfile}}
 
 # Set game name
-LABEL game="{{.GameName}}"
+LABEL server="{{.EnvironmentName}}"
+
+# Multipaper Version
+LABEL steam_app_id="{{.SteamAppID}}"
 
 # Set Maintainer
 LABEL maintainer="{{.Maintainer}}"
-
-# Set Steam App ID
-LABEL steam_app_id="{{.SteamAppID}}"
 {{if .AdditionalDeps}}
 # Install dependencies
 RUN apt update && apt upgrade -y && \
@@ -21,13 +21,14 @@ RUN apt remove --purge -y curl && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 {{end}}
-COPY /server-configs/{{ .GameName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY /server-configs/{{ .GameName }}/kubelize/ /config/serverconfig.template
+COPY /bin/{{ .EnvironmentName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/steam/config-data/
+COPY /bin/{{ .EnvironmentName }}/configs/ /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R steam:steam /home/steam/kubelize/
+    chown -R kubelize:kubelize /home/kubelize/steam
 
-WORKDIR /home/steam/steamcmd
-USER steam
+WORKDIR /home/kubelize/steam
+USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]

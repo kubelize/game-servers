@@ -1,4 +1,4 @@
-games:
+environment:
   - name: seven_days_to_die
     steam_app_id: 294420
     dockerfile_ext: sdtd
@@ -25,3 +25,4 @@ games:
     base: we
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []
+

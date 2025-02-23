@@ -15,8 +15,8 @@ RUN apt update && apt upgrade -y && \
     chmod +x /usr/local/bin/dockerize && \
     adduser --disabled-password --gecos "" steam && \
     su steam -c 'cd && \
-        mkdir -p /home/steam/steamcmd && \
-        cd /home/steam/steamcmd && \
+        mkdir -p /home/kubelize/steam/config-data && \
+        cd /home/kubelize/steam && \
         curl -o steamcmd_linux.tar.gz "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" && \
         tar zxf steamcmd_linux.tar.gz && \
         rm steamcmd_linux.tar.gz' && \

@@ -11,10 +11,10 @@ RUN apt update && apt upgrade -y && \
     locales && \
     curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -xz -C /usr/local/bin && \
     chmod +x /usr/local/bin/dockerize && \
-    adduser --disabled-password --gecos "" steam && \
+    adduser --disabled-password --gecos "" kubelize && \
     su steam -c 'cd && \
-        mkdir -p /home/steam/steamcmd && \
-        cd /home/steam/steamcmd && \
+        mkdir -p /home/kubelize/steam/config-data && \
+        cd /home/kubelize/steam && \
         curl -o steamcmd_linux.tar.gz "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" && \
         tar zxf steamcmd_linux.tar.gz && \
         rm steamcmd_linux.tar.gz' && \

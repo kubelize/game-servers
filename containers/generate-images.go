@@ -8,33 +8,33 @@ import (
 	"io/ioutil"
 )
 
-// Game represents the structure for each game configuration in the YAML file
-type Game struct {
+// Environment represents the structure for each Environment configuration in the YAML file
+type Environment struct {
 	Name                string   `yaml:"name"`
-	SteamAppID          int      `yaml:"steam_app_id"`
 	DockerfileExt       string   `yaml:"dockerfile_ext"`
 	Base                string   `yaml:"base"`
 	Maintainer          string   `yaml:"maintainer"`
+	SteamAppID		    string   `yaml:"steam_app_id"`
 	AdditionalDeps      []string `yaml:"additional_dependencies"`
 }
 
 // Config represents the structure of the entire YAML config file
 type Config struct {
-	Games []Game `yaml:"games"`
+	Environment []Environment `yaml:"environment"`
 }
 
 // TemplateData is used to pass data to the Dockerfile template
 type TemplateData struct {
-	GameName           string
+	EnvironmentName    string
 	BaseDockerfile     string
 	Maintainer         string
-	SteamAppID         int
+	SteamAppID  string
 	AdditionalDeps     []string
 }
 
 func main() {
 	// Load the YAML file
-	data, err := ioutil.ReadFile("games.yaml")
+	data, err := ioutil.ReadFile("environment.yaml")
 	if err != nil {
 		fmt.Printf("Error reading YAML file: %v\n", err)
 		return
@@ -48,10 +48,10 @@ func main() {
 		return
 	}
 
-	// Create the game-servers directory if it doesn't exist
-	err = os.MkdirAll("./game-servers", os.ModePerm)
+	// Create the images directory if it doesn't exist
+	err = os.MkdirAll("./images", os.ModePerm)
 	if err != nil {
-		fmt.Printf("Error creating game-servers directory: %v\n", err)
+		fmt.Printf("Error creating images directory: %v\n", err)
 		return
 	}
 
@@ -69,35 +69,35 @@ func main() {
 		return
 	}
 
-	// Generate Dockerfiles for each game
-	for _, game := range config.Games {
-		baseDockerfile := fmt.Sprintf("kubelize/game-servers:0.1.0-base%s", game.Base)
-		outputFileName := fmt.Sprintf("Dockerfile.%s", game.DockerfileExt)
+	// Generate Dockerfiles for each environment
+	for _, environment := range config.Environment {
+		baseDockerfile := fmt.Sprintf("kubelize/multipaper:0.3.0-base-%s", environment.Base)
+		outputFileName := fmt.Sprintf("Dockerfile.%s", environment.DockerfileExt)
 
 		// Create the output file
-		outputFile, err := os.Create(fmt.Sprintf("./game-servers/%s", outputFileName))
+		outputFile, err := os.Create(fmt.Sprintf("./images/%s", outputFileName))
 		if err != nil {
-			fmt.Printf("Error creating Dockerfile for %s: %v\n", game.Name, err)
+			fmt.Printf("Error creating Dockerfile for %s: %v\n", environment.Name, err)
 			continue
 		}
 		defer outputFile.Close()
 
 		// Prepare the template data
 		templateData := TemplateData{
-			GameName:       game.Name,
-			BaseDockerfile: baseDockerfile,
-			Maintainer:     game.Maintainer,
-			SteamAppID:     game.SteamAppID,
-			AdditionalDeps: game.AdditionalDeps,
+			EnvironmentName:	environment.Name,
+			BaseDockerfile: 	baseDockerfile,
+			Maintainer:     	environment.Maintainer,
+			SteamAppID: 		environment.SteamAppID,
+			AdditionalDeps: 	environment.AdditionalDeps,
 		}
 
 		// Render the template and write to the file
 		err = tmpl.Execute(outputFile, templateData)
 		if err != nil {
-			fmt.Printf("Error writing Dockerfile for %s: %v\n", game.Name, err)
+			fmt.Printf("Error writing Dockerfile for %s: %v\n", environment.Name, err)
 			continue
 		}
 
-		fmt.Printf("Dockerfile for %s created at ./game-servers/%s\n", game.Name, outputFileName)
+		fmt.Printf("Dockerfile for %s created at ./images/%s\n", environment.Name, outputFileName)
 	}
 }

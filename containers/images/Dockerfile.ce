@@ -1,0 +1,23 @@
+# Base Dockerfile
+FROM kubelize/multipaper:0.3.0-base-we
+
+# Set game name
+LABEL server="conan_exiles"
+
+# Multipaper Version
+LABEL steam_app_id="443030"
+
+# Set Maintainer
+LABEL maintainer="kubelize@kubelize.com"
+
+COPY /bin/conan_exiles/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY /bin/conan_exiles/serverconfig.template /home/kubelize/steam/config-data/
+COPY /bin/conan_exiles/configs/ /home/kubelize/steam/config-data/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chown -R kubelize:kubelize /home/kubelize/steam
+
+WORKDIR /home/kubelize/steam
+USER kubelize
+
+ENTRYPOINT ["entrypoint.sh"]

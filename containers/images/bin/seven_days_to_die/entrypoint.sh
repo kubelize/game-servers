@@ -1,19 +1,21 @@
 #!/bin/sh
 
 # Define paths to the template and final config
-TEMPLATE_PATH="/config/serverconfig.template"
-OUTPUT_PATH="/config//serverconfig.xml"
+TEMPLATE_PATH="/home/kubelize/steam/config-data/serverconfig.template"
+OUTPUT_PATH="/home/kubelize/steam/config-data/serverconfig.xml"
 
 # Load values directly from the ConfigMap and Secret into temporary files
-CONFIG_FILE="/config/config-values.yaml"
-PASSWORD_FILE="/config/ServerPassword"
+CONFIG_FILE="/home/kubelize/steam/config-data/config-values.yaml"
+PASSWORD_FILE="/home/kubelize/steam/config-data/ServerPassword"
 
 # Generate the configuration using dockerize
 echo "Generating configuration from template..."
 
 dockerize -template "$TEMPLATE_PATH:$OUTPUT_PATH" \
-  -template="$CONFIG_FILE:/config/config-values.yaml" \
-  -template="$PASSWORD_FILE:/config/ServerPassword"
+  # ConfigMap from the Helm-Chart
+  -template="$CONFIG_FILE:/home/kubelize/steam/config-data/config-values.yaml" \
+  # Secret from the Helm-Chart
+  -template="$PASSWORD_FILE:/home/kubelize/steam/config-data/ServerPassword"
 
 # Check if the config was created successfully
 if [ -f "$OUTPUT_PATH" ]; then
