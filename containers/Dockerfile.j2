@@ -23,7 +23,6 @@ RUN apt remove --purge -y curl && \
 {{end}}
 COPY /bin/{{ .EnvironmentName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/steam/config-data/
-COPY /bin/{{ .EnvironmentName }}/configs/ /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam

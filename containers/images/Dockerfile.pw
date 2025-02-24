@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/multipaper:0.3.0-base-ln
+FROM kubelize/game-servers:0.2.1-ln
 
 # Set game name
 LABEL server="palworld"
@@ -12,7 +12,6 @@ LABEL maintainer="kubelize@kubelize.com"
 
 COPY /bin/palworld/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY /bin/palworld/serverconfig.template /home/kubelize/steam/config-data/
-COPY /bin/palworld/configs/ /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam

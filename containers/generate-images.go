@@ -71,7 +71,7 @@ func main() {
 
 	// Generate Dockerfiles for each environment
 	for _, environment := range config.Environment {
-		baseDockerfile := fmt.Sprintf("kubelize/multipaper:0.3.0-base-%s", environment.Base)
+		baseDockerfile := fmt.Sprintf("kubelize/game-servers:0.2.1-%s", environment.Base)
 		outputFileName := fmt.Sprintf("Dockerfile.%s", environment.DockerfileExt)
 
 		// Create the output file

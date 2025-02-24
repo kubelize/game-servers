@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: sdtd
+spec:
+  containers:
+  - image: kubelize/game-servers:0.2.6-sdtd
+    command: ["sleep", "infinity"]
+    imagePullPolicy: IfNotPresent
+    name: game-servers
+    ports:
+    - containerPort: 80
+      name: http
+      protocol: TCP
+    resources: {}
+    securityContext: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /home/kubelize/steam/config-data/config-values.yaml
+      name: server-config
+      subPath: config-values.yaml
+    - mountPath: /home/kubelize/steam/config-data/ServerPassword
+      name: server-password
+      subPath: ServerPassword
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-rs9k7
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: talos-4eo-l1n
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: kube-game-servers
+  serviceAccountName: kube-game-servers
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - configMap:
+      defaultMode: 420
+      name: server-config
+    name: server-config
+  - name: server-password
+    secret:
+      defaultMode: 420
+      secretName: kube-game-servers-server-password
+  - name: kube-api-access-rs9k7
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace

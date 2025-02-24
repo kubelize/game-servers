@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/multipaper:0.3.0-base-we
+FROM kubelize/game-servers:0.2.1-we
 
 # Set game name
 LABEL server="conan_exiles"
@@ -12,7 +12,6 @@ LABEL maintainer="kubelize@kubelize.com"
 
 COPY /bin/conan_exiles/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY /bin/conan_exiles/serverconfig.template /home/kubelize/steam/config-data/
-COPY /bin/conan_exiles/configs/ /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam

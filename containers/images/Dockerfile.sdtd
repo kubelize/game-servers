@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/multipaper:0.3.0-base-ln
+FROM kubelize/game-servers:0.2.1-ln
 
 # Set game name
 LABEL server="seven_days_to_die"
@@ -12,7 +12,6 @@ LABEL maintainer="kubelize@kubelize.com"
 
 COPY /bin/seven_days_to_die/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY /bin/seven_days_to_die/serverconfig.template /home/kubelize/steam/config-data/
-COPY /bin/seven_days_to_die/configs/ /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam
