@@ -91,7 +91,7 @@ serverConfig:
   # Modes
   CreativeMode: "false"
   DayNightLength: "60"
-  DayLightLength: 18"
+  DayLightLength: "18"
   DeathPenalty: "1"
   DropOnDeath: "1"
   DropOnQuit: "0"
@@ -111,7 +111,7 @@ serverConfig:
   ZombieMoveNight: "3"
   ZombieFeralMove: "3"
   ZombieBMMove: "3"
-  BloodMoonFrequecy: "7"
+  BloodMoonFrequency: "7"
   BloodMoonRange: "0"
   BloodMoonWarning: "8"
   BloodMoonEnemyCount: "8"

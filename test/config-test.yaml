@@ -1,28 +1,18 @@
-# These are the default values needed for the 7 Days to Die server.
-serverConfig:
-# Copy these values into your `values.yaml` file to use them under the `serverConfig` key.  
-  # Details
   ServerName: "My Game Server"
   ServerDescription: "Managed by kubelize"
   ServerWebsiteURL: ""
   ServerLoginConfirmationText: ""
   Region: "Europe"
   Language: "English"
-
-  # Networking
   ServerPort: "26900"
   ServerVisibility: "2"
   ServerDisabledNetworkProtocols: "SteamNetworking"
   ServerMaxWorldTransferSpeed: "512"
-
-  # Player Slots
   ServerMaxPlayerCount: "8"
   ServerReservedSlots: "0"
   ServerReservedSlotsPermission: "100"
   ServerAdminSlots: "0"
   ServerAdminSlotsPermission: "0"
-
-  # Web Interface
   WebDashboardEnabled: "false"
   WebDashboardPort: "8080"
   WebDashboardUrl: ""
@@ -32,8 +22,6 @@ serverConfig:
   TelnetFailedLoginLimit: ""
   TelnetFailedLoginsBlocktime: "10"
   TerminalWindowEnabled: "10"
-
-  # Various Settings
   ServerAllowCrossplay: "false"
   EACEnabled: "true"
   IgnoreEOSSanctions: "false"
@@ -44,15 +32,11 @@ serverConfig:
   SaveDataLimit: "-1"
   ServerMaxAllowedViewDistance: "12"
   MaxQueuedMeshLayers: "1000"
-
-  # World
   GameWorld: "Navezgane"
   WorldGenSeed: "asdf"
   WorldGenSize: "6144"
   GameName: "My Game"
   GameMode: "GameModeSurvival"
-
-  # Difficulty
   GameDifficulty: "1"
   BlockDamagePlayer: "100"
   BlockDamageAI: "100"
@@ -60,8 +44,6 @@ serverConfig:
   XPMultiplier: "100"
   PlayerSafeZoneLevel: "5"
   PlayerSafeZoneHours: "5"
-
-  # Modes
   CreativeMode: "false"
   DayNightLength: "60"
   DayLightLength: "18"
@@ -73,8 +55,6 @@ serverConfig:
   TwitchServerPermission: "90"
   TwitchBloodMoonAllowed: "false"
   QuestProgressionDailyLimit: "4"
-
-  # AI Settings
   MaxSpawnedZombies: "64"
   MaxSpawnedAnimals: "50"
   EnemySpawnMode: "true"
@@ -88,18 +68,12 @@ serverConfig:
   BloodMoonRange: "0"
   BloodMoonWarning: "8"
   BloodMoonEnemyCount: "8"
-
-  # Loot
   LootAbundance: "100"
   LootRespawnDays: "7"
   AirDropFrequency: "72"
   AirDropMarker: "true"
-
-  # Multiplayer
   PartySharedKillRange: "100"
   PlayerKillingMode: "3"
-
-  # Land Claim
   LandClaimCount: "3"
   LandClaimSize: "41"
   LandClaimDeadZone: "30"
