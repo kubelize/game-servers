@@ -1,11 +1,20 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-pod
+  name: test-sdtd
   namespace: sdtd
+  ownerReferences:
+  - apiVersion: apps/v1
+    blockOwnerDeletion: true
+    controller: true
+    kind: ReplicaSet
+    name: kube-game-servers-6984847f66
+    uid: 008c3d04-183f-4c09-8021-f6d3e0ce060a
+  resourceVersion: "46188891"
+  uid: 40b42368-80eb-48bc-86e3-40e4aa386860
 spec:
   containers:
-  - image: kubelize/game-servers:0.2.6-sdtd
+  - image: kubelize/game-servers:0.2.8-sdtd
     command: ["sleep", "infinity"]
     imagePullPolicy: IfNotPresent
     name: game-servers
@@ -21,11 +30,11 @@ spec:
     - mountPath: /home/kubelize/steam/config-data/config-values.yaml
       name: server-config
       subPath: config-values.yaml
-    - mountPath: /home/kubelize/steam/config-data/ServerPassword
+    - mountPath: /home/kubelize/steam/config-data/serverpassword.yaml
       name: server-password
-      subPath: ServerPassword
+      subPath: serverpassword.yaml
     - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-      name: kube-api-access-rs9k7
+      name: kube-api-access-dd98h
       readOnly: true
   dnsPolicy: ClusterFirst
   enableServiceLinks: true
@@ -56,7 +65,7 @@ spec:
     secret:
       defaultMode: 420
       secretName: kube-game-servers-server-password
-  - name: kube-api-access-rs9k7
+  - name: kube-api-access-dd98h
     projected:
       defaultMode: 420
       sources:

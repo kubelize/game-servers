@@ -60,7 +60,7 @@ data:
     BedrollExpiryTime: "{{ .Values.serverConfig.BedrollExpiryTime }}"
     TwitchServerPermission: "{{ .Values.serverConfig.TwitchServerPermission }}"
     TwitchBloodMoonAllowed: "{{ .Values.serverConfig.TwitchBloodMoonAllowed }}"
-    QuestProgressDailyLimit: "{{ .Values.serverConfig.QuestProgressDailyLimit }}"
+    QuestProgressionDailyLimit: "{{ .Values.serverConfig.QuestProgressionDailyLimit }}"
     MaxSpawnedZombies: "{{ .Values.serverConfig.MaxSpawnedZombies }}"
     MaxSpawnedAnimals: "{{ .Values.serverConfig.MaxSpawnedAnimals }}"
     EnemySpawnMode: "{{ .Values.serverConfig.EnemySpawnMode }}"

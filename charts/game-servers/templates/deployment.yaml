@@ -50,7 +50,7 @@ spec:
           {{- end }}
             - name: server-password
               mountPath: /home/kubelize/steam/config-data/serverpassword.yaml
-              subPath: ServerPassword
+              subPath: serverpassword.yaml
       {{- with .Values.volumes }}
       volumes:
         {{- toYaml . | nindent 8 }}

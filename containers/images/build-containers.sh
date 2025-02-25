@@ -3,5 +3,5 @@ podman build --platform linux/amd64 -t kubelize/game-servers:0.2.1-ln -f Dockerf
 podman build --platform linux/amd64 -t kubelize/game-servers:0.2.0-we -f Dockerfile.we
 podman push kubelize/game-servers:0.2.1-ln
 podman push kubelize/game-servers:0.2.0-we
-podman build --platform linux/amd64 -t kubelize/game-servers:0.2.6-sdtd -f images/Dockerfile.sdtd
-podman push kubelize/game-servers:0.2.6-sdtd
+podman build --platform linux/amd64 -t kubelize/game-servers:0.2.8-sdtd -f images/Dockerfile.sdtd
+podman push kubelize/game-servers:0.2.8-sdtd
