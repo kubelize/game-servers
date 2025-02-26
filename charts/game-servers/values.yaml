@@ -11,7 +11,7 @@ image:
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.2.7-sdtd"
+  tag: "0.2.9-sdtd"
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -59,12 +59,24 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
-service:
-  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+# Service for the game ports
+gameService: {}
+  # type: ClusterIP
+  # ports:
+  #   - name: gameport
+  #     protocol: TCP
+  #     port: 26900
+  #     targetPort: 26900
+
+# Second service for webadmin HTTP port (used with ingress)
+webService:
+  enabled: false
   type: ClusterIP
-  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
-  port: 80
+  ports:
+    - name: webadmin
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -84,10 +96,6 @@ ingress:
   #      - chart-example.local
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -97,13 +105,22 @@ resources: {}
 
 # This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
 livenessProbe:
-  httpGet:
-    path: /
-    port: http
+  enabled: false
+  config:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
+
 readinessProbe:
-  httpGet:
-    path: /
-    port: http
+  enabled: false
+  config:
+    httpGet:
+      path: /readiness
+      port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
 
 # Additional volumes on the output Deployment definition.
 volumes: []

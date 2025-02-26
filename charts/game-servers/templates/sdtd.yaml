@@ -1,3 +1,4 @@
+{{- if contains "sdtd" .Values.image.tag }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -92,3 +93,4 @@ data:
     DynamicMeshLandClaimOnly: "{{ .Values.serverConfig.DynamicMeshLandClaimOnly }}"
     DynamicMeshLandClaimBuffer: "{{ .Values.serverConfig.DynamicMeshLandClaimBuffer }}"
     DynamicMeshMaxItemCache: "{{ .Values.serverConfig.DynamicMeshMaxItemCache }}"
+{{- end }}

@@ -1,0 +1,19 @@
+{{- if or .Values.webService.enabled .Values.ingress.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "game-servers.fullname" . }}-web
+  labels:
+    {{- include "game-servers.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webService.type | default "ClusterIP" }}
+  ports:
+    {{- range .Values.webService.ports }}
+    - name: {{ .name }}
+      protocol: {{ .protocol }}
+      port: {{ .port }}
+      targetPort: {{ .targetPort }}
+    {{- end }}
+  selector:
+    {{- include "game-servers.selectorLabels" . | nindent 4 }}
+{{- end }}
