@@ -1,0 +1,9 @@
+{{- if contains "sdtd" .Values.image.tag }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: server-config
+data:
+  config-values.yaml: |
+
+{{- end }}
