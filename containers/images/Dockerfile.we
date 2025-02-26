@@ -13,7 +13,7 @@ RUN apt update && apt upgrade -y && \
     locales && \
     curl -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.11.2/gomplate_linux-amd64 -o /usr/local/bin/gomplate && \
     chmod +x /usr/local/bin/gomplate && \
-    adduser --disabled-password --gecos "" steam && \
+    adduser --disabled-password --gecos "" kubelize && \
     su kubelize -c 'cd && \
         mkdir -p /home/kubelize/steam/config-data && \
         cd /home/kubelize/steam && \
