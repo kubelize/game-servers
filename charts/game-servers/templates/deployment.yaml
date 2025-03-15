@@ -28,6 +28,13 @@ spec:
       serviceAccountName: {{ include "game-servers.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      initContainers:
+        - name: init-permissions
+          image: busybox
+          command: ["sh", "-c", "mkdir -p /home/kubelize/server && chown -R 1000:1000 /home/kubelize/server"]
+          volumeMounts:
+            - mountPath: /home/kubelize/server
+              name: {{ .Release.Name }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:

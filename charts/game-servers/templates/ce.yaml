@@ -1,4 +1,4 @@
-{{- if contains "sdtd" .Values.image.tag }}
+{{- if contains "ce" .Values.image.tag }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
