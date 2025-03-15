@@ -1,0 +1,44 @@
+
+2025-03-15T20:56:45 0.127 INF System information:
+2025-03-15T20:56:45 0.128 INF    OS: Linux 6.6 Debian GNU/Linux 12 64bit
+2025-03-15T20:56:45 0.129 INF    CPU: QEMU Virtual CPU version 2.5+ (cores: 8)
+2025-03-15T20:56:45 0.129 INF    RAM: 15977 MB
+2025-03-15T20:56:45 0.130 INF    GPU: Null Device (128 MB)
+2025-03-15T20:56:45 0.135 INF    Graphics API: NULL 1.0 [1.0] (shader level 3.0)
+2025-03-15T20:56:45 0.138 INF Local UTC offset: 0 hours
+2025-03-15T20:56:45 0.195 INF Command line arguments: ./7DaysToDieServer.x86_64 -logfile /home/kubelize/server/7DaysToDieServer_Data/output_log__2025-03-15__20-56-43.txt -quit -batchmode -nographics -dedicated -configfile=/home/kubelize/server/sdtdconfig.xml
+2025-03-15T20:56:45 0.214 INF Parsing server configfile: /home/kubelize/server/sdtdconfig.xml
+2025-03-15T20:56:45 0.262 ERR ====================================================================================================
+2025-03-15T20:56:45 0.262 ERR Error parsing configfile:
+2025-03-15T20:56:45 0.271 EXC Unexpected end of file has occurred. The following elements are not closed: ServerSettings. Line 137, position 1.
+  at System.Xml.XmlTextReaderImpl.Throw (System.Exception e) [0x00027] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.XmlTextReaderImpl.Throw (System.String res, System.String arg) [0x00029] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.XmlTextReaderImpl.Throw (System.Int32 pos, System.String res, System.String arg) [0x0000c] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.XmlTextReaderImpl.ThrowUnclosedElements () [0x000cc] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.XmlTextReaderImpl.ParseElementContent () [0x001eb] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.XmlTextReaderImpl.Read () [0x00085] in <61f4f28f981d4565b8edf5578bba6cca>:0
+  at System.Xml.Linq.XContainer.ReadContentFrom (System.Xml.XmlReader r) [0x00025] in <0cab942efc144a60acefec93801dc269>:0
+  at System.Xml.Linq.XContainer.ReadContentFrom (System.Xml.XmlReader r, System.Xml.Linq.LoadOptions o) [0x00005] in <0cab942efc144a60acefec93801dc269>:0
+  at System.Xml.Linq.XDocument.Load (System.Xml.XmlReader reader, System.Xml.Linq.LoadOptions options) [0x00024] in <0cab942efc144a60acefec93801dc269>:0
+  at System.Xml.Linq.XDocument.Load (System.IO.Stream stream, System.Xml.Linq.LoadOptions options) [0x0000f] in <0cab942efc144a60acefec93801dc269>:0
+  at System.Xml.Linq.XDocument.Load (System.IO.Stream stream) [0x00000] in <0cab942efc144a60acefec93801dc269>:0
+  at SdXDocument.Load (System.String filename) [0x00007] in <17494700f8c343f99182fb160cad1342>:0
+  at GameStartupHelper.LoadConfigFile (System.String _filename) [0x0006f] in <17494700f8c343f99182fb160cad1342>:0
+UnityEngine.StackTraceUtility:ExtractStringFromException(Object)
+Log:Exception(Exception)
+GameStartupHelper:LoadConfigFile(String)
+GameStartupHelper:ParseCommandLine(String[])
+GameStartupHelper:InitCommandLine()
+GameEntrypoint:FirstFrameInit()
+<EntrypointCoroutine>d__8:MoveNext()
+ThreadManager:RunCoroutineSync(IEnumerator)
+GameEntrypoint:Awake()
+
+2025-03-15T20:56:45 0.271 ERR ====================================================================================================
+2025-03-15T20:56:45 0.271 INF UserDataFolder: /home/kubelize/.local/share/7DaysToDie
+2025-03-15T20:56:45 0.272 ERR [GameEntrypoint] Failed initializing core systems, shutting down
+InvalidOperationException: GamePrefs is being accessed before it is ready.
+  at GamePrefs.get_Instance () [0x00007] in <17494700f8c343f99182fb160cad1342>:0
+  at GamePrefs.GetObject (EnumGamePrefs _eProperty) [0x00002] in <17494700f8c343f99182fb160cad1342>:0
+  at GamePrefs.GetFloat (EnumGamePrefs _eProperty) [0x00000] in <17494700f8c343f99182fb160cad1342>:0
+  at SelectionBoxManager.Awake () [0x00012] in <17494700f8c343f99182fb160cad1342>:0
