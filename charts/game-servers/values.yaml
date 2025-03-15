@@ -26,6 +26,13 @@ serverPasswordSecret:
   useExisting: false
   existingSecretName: ""
 
+# Persistent Volume Settings
+persistence:
+  enabled: false
+  # storageClassName: ""
+  # accessMode: ReadWriteOnce
+  # size: 1Gi
+
 # Server Configuration
 serverConfig: {}
 

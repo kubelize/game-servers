@@ -27,7 +27,6 @@ serverPasswordSecret:
   existingSecretName: ""
 
 # Server Configuration
-serverConfig:
 # These are the default values needed for the 7 Days to Die server.
 serverConfig:
 # Copy these values into your `values.yaml` file to use them under the `serverConfig` key.  
