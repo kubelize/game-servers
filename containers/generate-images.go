@@ -10,12 +10,12 @@ import (
 
 // Environment represents the structure for each Environment configuration in the YAML file
 type Environment struct {
-	Name                string   `yaml:"name"`
-	DockerfileExt       string   `yaml:"dockerfile_ext"`
-	Base                string   `yaml:"base"`
-	Maintainer          string   `yaml:"maintainer"`
-	SteamAppID		    string   `yaml:"steam_app_id"`
-	AdditionalDeps      []string `yaml:"additional_dependencies"`
+	Name				string   `yaml:"name"`
+	DockerfileExt		string   `yaml:"dockerfile_ext"`
+	Base				string   `yaml:"base"`
+	Maintainer			string   `yaml:"maintainer"`
+	SteamAppID			string   `yaml:"steam_app_id"`
+	AdditionalDeps		[]string `yaml:"additional_dependencies"`
 }
 
 // Config represents the structure of the entire YAML config file
@@ -25,11 +25,11 @@ type Config struct {
 
 // TemplateData is used to pass data to the Dockerfile template
 type TemplateData struct {
-	EnvironmentName    string
-	BaseDockerfile     string
-	Maintainer         string
-	SteamAppID  string
-	AdditionalDeps     []string
+	EnvironmentName		string
+	BaseDockerfile    	string
+	Maintainer         	string
+	SteamAppID  	   	string
+	AdditionalDeps     	[]string
 }
 
 func main() {
