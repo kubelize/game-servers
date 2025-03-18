@@ -36,7 +36,7 @@
 	<property name="TelnetFailedLoginLimit"				value=""/>				<!-- After this many wrong passwords from a single remote client the client will be blocked from connecting to the Telnet interface -->
 	<property name="TelnetFailedLoginsBlocktime"		value="10"/>		<!-- How long will the block persist (in seconds) -->
 
-	<property name="TerminalWindowEnabled"				value="10"/>				<!-- Show a terminal window for log output / command input (Windows only) -->
+	<property name="TerminalWindowEnabled"				value="true"/>				<!-- Show a terminal window for log output / command input (Windows only) -->
 
 	<!-- Folder and file locations -->
 	<property name="AdminFileName"						value="serveradmin.xml"/>							<!-- Server admin file name. Path relative to UserDataFolder/Saves -->
@@ -134,3 +134,4 @@
 	<!-- There are several game settings that you cannot change when starting a new game.
 	You can use console commands to change at least some of them ingame.
 	setgamepref BedrollDeadZoneSize 30 -->
+</ServerSettings>
