@@ -134,3 +134,4 @@
 	<!-- There are several game settings that you cannot change when starting a new game.
 	You can use console commands to change at least some of them ingame.
 	setgamepref BedrollDeadZoneSize 30 -->
+</ServerSettings>
