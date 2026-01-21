@@ -1,0 +1,85 @@
+{{- if contains "ht" .Values.image.tag }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "game-servers.fullname" . }}-config
+  labels:
+    {{- include "game-servers.labels" . | nindent 4 }}
+data:
+  config-values.yaml: |
+    # Core Settings
+    TZ: "{{ .Values.serverConfig.TZ }}"
+    DEBUG: "{{ .Values.serverConfig.DEBUG }}"
+    PROD: "{{ .Values.serverConfig.PROD }}"
+    SERVER_PORT: "{{ .Values.serverConfig.SERVER_PORT }}"
+    SERVER_IP: "{{ .Values.serverConfig.SERVER_IP }}"
+    JAVA_ARGS: "{{ .Values.serverConfig.JAVA_ARGS }}"
+
+    # Hytale Cache Settings
+    HYTALE_CACHE: "{{ .Values.serverConfig.HYTALE_CACHE }}"
+    HYTALE_CACHE_DIR: "{{ .Values.serverConfig.HYTALE_CACHE_DIR }}"
+
+    # Authentication & Access
+    HYTALE_ACCEPT_EARLY_PLUGINS: "{{ .Values.serverConfig.HYTALE_ACCEPT_EARLY_PLUGINS }}"
+    HYTALE_ALLOW_OP: "{{ .Values.serverConfig.HYTALE_ALLOW_OP }}"
+    HYTALE_AUTH_MODE: "{{ .Values.serverConfig.HYTALE_AUTH_MODE }}"
+    HYTALE_IDENTITY_TOKEN: "{{ .Values.serverConfig.HYTALE_IDENTITY_TOKEN }}"
+    HYTALE_SESSION_TOKEN: "{{ .Values.serverConfig.HYTALE_SESSION_TOKEN }}"
+    HYTALE_OWNER_NAME: "{{ .Values.serverConfig.HYTALE_OWNER_NAME }}"
+    HYTALE_OWNER_UUID: "{{ .Values.serverConfig.HYTALE_OWNER_UUID }}"
+
+    # Backup Configuration
+    HYTALE_BACKUP: "{{ .Values.serverConfig.HYTALE_BACKUP }}"
+    HYTALE_BACKUP_DIR: "{{ .Values.serverConfig.HYTALE_BACKUP_DIR }}"
+    HYTALE_BACKUP_FREQUENCY: "{{ .Values.serverConfig.HYTALE_BACKUP_FREQUENCY }}"
+    HYTALE_BACKUP_MAX_COUNT: "{{ .Values.serverConfig.HYTALE_BACKUP_MAX_COUNT }}"
+
+    # Server Options
+    HYTALE_BARE: "{{ .Values.serverConfig.HYTALE_BARE }}"
+    HYTALE_BOOT_COMMAND: "{{ .Values.serverConfig.HYTALE_BOOT_COMMAND }}"
+    HYTALE_CLIENT_PID: "{{ .Values.serverConfig.HYTALE_CLIENT_PID }}"
+    HYTALE_DISABLE_ASSET_COMPARE: "{{ .Values.serverConfig.HYTALE_DISABLE_ASSET_COMPARE }}"
+    HYTALE_DISABLE_CPB_BUILD: "{{ .Values.serverConfig.HYTALE_DISABLE_CPB_BUILD }}"
+    HYTALE_DISABLE_FILE_WATCHER: "{{ .Values.serverConfig.HYTALE_DISABLE_FILE_WATCHER }}"
+    HYTALE_DISABLE_SENTRY: "{{ .Values.serverConfig.HYTALE_DISABLE_SENTRY }}"
+    HYTALE_EVENT_DEBUG: "{{ .Values.serverConfig.HYTALE_EVENT_DEBUG }}"
+    HYTALE_FORCE_NETWORK_FLUSH: "{{ .Values.serverConfig.HYTALE_FORCE_NETWORK_FLUSH }}"
+
+    # Schema & Validation
+    HYTALE_GENERATE_SCHEMA: "{{ .Values.serverConfig.HYTALE_GENERATE_SCHEMA }}"
+    HYTALE_VALIDATE_ASSETS: "{{ .Values.serverConfig.HYTALE_VALIDATE_ASSETS }}"
+    HYTALE_VALIDATE_PREFABS: "{{ .Values.serverConfig.HYTALE_VALIDATE_PREFABS }}"
+    HYTALE_VALIDATE_WORLD_GEN: "{{ .Values.serverConfig.HYTALE_VALIDATE_WORLD_GEN }}"
+    HYTALE_SHUTDOWN_AFTER_VALIDATE: "{{ .Values.serverConfig.HYTALE_SHUTDOWN_AFTER_VALIDATE }}"
+
+    # Logging
+    HYTALE_LOG: "{{ .Values.serverConfig.HYTALE_LOG }}"
+
+    # World & Content
+    HYTALE_MIGRATE_WORLDS: "{{ .Values.serverConfig.HYTALE_MIGRATE_WORLDS }}"
+    HYTALE_MIGRATIONS: "{{ .Values.serverConfig.HYTALE_MIGRATIONS }}"
+    HYTALE_UNIVERSE: "{{ .Values.serverConfig.HYTALE_UNIVERSE }}"
+    HYTALE_WORLD_GEN: "{{ .Values.serverConfig.HYTALE_WORLD_GEN }}"
+    HYTALE_PREFAB_CACHE: "{{ .Values.serverConfig.HYTALE_PREFAB_CACHE }}"
+
+    # Mods & Plugins
+    HYTALE_MODS: "{{ .Values.serverConfig.HYTALE_MODS }}"
+    HYTALE_EARLY_PLUGINS: "{{ .Values.serverConfig.HYTALE_EARLY_PLUGINS }}"
+
+    # Network & Transport
+    HYTALE_TRANSPORT: "{{ .Values.serverConfig.HYTALE_TRANSPORT }}"
+    HYTALE_SINGLEPLAYER: "{{ .Values.serverConfig.HYTALE_SINGLEPLAYER }}"
+
+    # Version Control
+    HYTALE_VERSION: "{{ .Values.serverConfig.HYTALE_VERSION }}"
+
+    # config.json Settings
+    HYTALE_SERVER_NAME: "{{ .Values.serverConfig.HYTALE_SERVER_NAME }}"
+    HYTALE_MOTD: "{{ .Values.serverConfig.HYTALE_MOTD }}"
+    HYTALE_PASSWORD: "{{ .Values.serverConfig.HYTALE_PASSWORD }}"
+    HYTALE_MAX_PLAYERS: "{{ .Values.serverConfig.HYTALE_MAX_PLAYERS }}"
+    HYTALE_MAX_VIEW_RADIUS: "{{ .Values.serverConfig.HYTALE_MAX_VIEW_RADIUS }}"
+    HYTALE_COMPRESSION: "{{ .Values.serverConfig.HYTALE_COMPRESSION }}"
+    HYTALE_WORLD: "{{ .Values.serverConfig.HYTALE_WORLD }}"
+    HYTALE_GAMEMODE: "{{ .Values.serverConfig.HYTALE_GAMEMODE }}"
+{{- end }}

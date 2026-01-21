@@ -23,13 +23,12 @@ RUN apt remove --purge -y curl && \
 
 COPY /bin/minecraft/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-COPY /bin/minecraft/serverconfig.template /home/kubelize/gameserver/config-data/
+COPY /bin/minecraft/serverconfig.template /home/kubelize/server/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/gameserver
+    chown -R kubelize:kubelize /home/kubelize/server
 
-WORKDIR /home/kubelize/gameserver
-
+WORKDIR /home/kubelize/server
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]

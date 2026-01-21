@@ -22,7 +22,7 @@ PW_VERSION ?= 0.1.0
 VH_VERSION ?= 0.1.0
 CE_VERSION ?= 0.1.1
 MC_VERSION ?= 0.1.0
-HT_VERSION ?= 0.1.0
+HT_VERSION ?= 0.1.2
 
 # Base images
 BASE_IMAGES = ln we jv

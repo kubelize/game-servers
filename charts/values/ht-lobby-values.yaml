@@ -1,0 +1,164 @@
+# Hytale Lobby Server Values
+# This is the entry point server that players connect to first
+# It can redirect/refer players to game world servers
+
+replicaCount: 1
+
+# Use Deployment for lobby (no need for stable network identity)
+useStatefulSet: false
+
+image:
+  repository: kubelize/game-servers
+  pullPolicy: Always
+  tag: "0.1.2-ht-alpha"
+
+imagePullSecrets: []
+nameOverride: "hytale-lobby"
+fullnameOverride: "hytale-lobby"
+
+serverPasswordSecret:
+  useExisting: false
+  existingSecretName: ""
+
+# Lobby server uses less storage (no large world data)
+persistence:
+  enabled: true
+  storageClassName: "proxmox"
+  accessMode: ReadWriteOnce
+  size: 10Gi
+
+serverConfig:
+  # ===== Core Settings =====
+  TZ: "UTC"
+  DEBUG: "FALSE"
+  PROD: "FALSE"
+  SERVER_PORT: "5520"
+  SERVER_IP: "0.0.0.0"
+  JAVA_ARGS: "-Xms2G -Xmx4G"
+
+  # ===== Hytale Cache Settings =====
+  HYTALE_CACHE: "FALSE"
+  HYTALE_CACHE_DIR: "./Server/HytaleServer.aot"
+
+  # ===== Authentication & Access =====
+  HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
+  HYTALE_ALLOW_OP: "TRUE"  # Lobby admins can manage
+  HYTALE_AUTH_MODE: ""  # authenticated (default)
+  HYTALE_IDENTITY_TOKEN: ""
+  HYTALE_SESSION_TOKEN: ""
+  HYTALE_OWNER_NAME: ""
+  HYTALE_OWNER_UUID: ""
+
+  # ===== Backup Configuration =====
+  HYTALE_BACKUP: "TRUE"
+  HYTALE_BACKUP_DIR: "./backups"
+  HYTALE_BACKUP_FREQUENCY: "120"  # Every 2 hours
+  HYTALE_BACKUP_MAX_COUNT: "5"
+
+  # ===== Server Options =====
+  HYTALE_BARE: "FALSE"
+  HYTALE_BOOT_COMMAND: ""
+  HYTALE_CLIENT_PID: ""
+  HYTALE_DISABLE_ASSET_COMPARE: "FALSE"
+  HYTALE_DISABLE_CPB_BUILD: "FALSE"
+  HYTALE_DISABLE_FILE_WATCHER: "FALSE"
+  HYTALE_DISABLE_SENTRY: "TRUE"
+  HYTALE_EVENT_DEBUG: "FALSE"
+  HYTALE_FORCE_NETWORK_FLUSH: "true"
+
+  # ===== Schema & Validation =====
+  HYTALE_GENERATE_SCHEMA: "FALSE"
+  HYTALE_VALIDATE_ASSETS: "FALSE"
+  HYTALE_VALIDATE_PREFABS: ""
+  HYTALE_VALIDATE_WORLD_GEN: "FALSE"
+  HYTALE_SHUTDOWN_AFTER_VALIDATE: "FALSE"
+
+  # ===== Logging =====
+  HYTALE_LOG: ""
+
+  # ===== World & Content =====
+  HYTALE_MIGRATE_WORLDS: ""
+  HYTALE_MIGRATIONS: ""
+  HYTALE_UNIVERSE: ""
+  HYTALE_WORLD_GEN: ""
+  HYTALE_PREFAB_CACHE: ""
+
+  # ===== Mods & Plugins =====
+  HYTALE_MODS: ""
+  HYTALE_EARLY_PLUGINS: ""
+
+  # ===== Network & Transport =====
+  HYTALE_TRANSPORT: ""  # QUIC (default)
+  HYTALE_SINGLEPLAYER: "FALSE"
+
+  # ===== Version Control =====
+  HYTALE_VERSION: "FALSE"
+
+  # ===== config.json Settings =====
+  HYTALE_SERVER_NAME: "🎮 Kubelize Network - Lobby"
+  HYTALE_MOTD: "Welcome! Select a world to play"
+  HYTALE_PASSWORD: ""  # Public lobby
+  HYTALE_MAX_PLAYERS: "200"  # Can handle more since it's just a hub
+  HYTALE_MAX_VIEW_RADIUS: "12"  # Lower for lobby (384 blocks)
+  HYTALE_COMPRESSION: "false"
+  HYTALE_WORLD: "lobby"  # Small lobby world
+  HYTALE_GAMEMODE: "Adventure"
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels:
+  server-type: "lobby"
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+# Lobby needs external access
+gameService:
+  annotations: {}
+    # "lbipam.cilium.io/ips": "10.130.5.240"  # Set your public IP
+  type: LoadBalancer  # Players connect here first
+  ports:
+    - name: gameport-udp
+      protocol: UDP
+      port: 5520
+      targetPort: 5520
+    - name: gameport-tcp
+      protocol: TCP
+      port: 5520
+      targetPort: 5520
+
+webService:
+  enabled: false
+
+ingress:
+  enabled: false
+
+# Lobby server is lighter
+resources:
+  limits:
+    cpu: "2"
+    memory: "4Gi"
+  requests:
+    cpu: "1"
+    memory: "2Gi"
+
+livenessProbe:
+  enabled: false
+
+readinessProbe:
+  enabled: false
+
+
+nodeSelector: {}
+affinity: {}
+tolerations: []

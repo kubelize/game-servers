@@ -1,11 +1,32 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
 # Ensure shell scripts always use LF (Unix) line endings
 *.sh text eol=lf
 
-# Ensure Dockerfiles use LF
+# Ensure Dockerfiles use LF (including templates)
 Dockerfile* text eol=lf
+*.j2 text eol=lf
 
-# Let YAML, Go, and other text files use auto line ending conversion
-*.yaml text
-*.yml text
-*.go text
-*.md text
+# YAML, JSON, and config files use LF
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf
+*.tpl text eol=lf
+
+# Go files use LF
+*.go text eol=lf
+go.mod text eol=lf
+go.sum text eol=lf
+
+# Markdown and documentation
+*.md text eol=lf
+
+# Makefiles must use LF
+Makefile text eol=lf
+makefile text eol=lf
+
+# Binary files
+*.jar binary
+*.zip binary
+*.tar.gz binary

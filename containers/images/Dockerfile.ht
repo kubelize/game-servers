@@ -14,7 +14,8 @@ LABEL maintainer="kubelize@kubelize.com"
 RUN apt update && apt upgrade -y && \
     apt install --no-install-recommends --no-install-suggests -y \
     temurin-25-jdk \
-    wget
+    wget \
+    unzip
 
 RUN apt remove --purge -y curl && \
     apt autoremove -y && \
@@ -23,13 +24,12 @@ RUN apt remove --purge -y curl && \
 
 COPY /bin/hytale/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-COPY /bin/hytale/serverconfig.template /home/kubelize/gameserver/config-data/
+COPY /bin/hytale/serverconfig.template /home/kubelize/server/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/gameserver
+    chown -R kubelize:kubelize /home/kubelize/server
 
-WORKDIR /home/kubelize/gameserver
-
+WORKDIR /home/kubelize/server
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]

@@ -1,0 +1,213 @@
+# Default values for Hytale game server
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# This will set the replicaset count
+replicaCount: 1
+
+# Use StatefulSet instead of Deployment
+# StatefulSet provides:
+#   - Stable network identities (predictable pod names)
+#   - Stable persistent storage (each pod gets its own PVC)
+#   - Ordered deployment and scaling
+# Useful for: Multi-world setups, servers needing stable hostnames
+useStatefulSet: false
+
+# Container image configuration
+image:
+  repository: kubelize/game-servers
+  pullPolicy: Always
+  tag: "0.1.2-ht-alpha"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Server Password
+# The Key of the Secret has to be ServerPassword
+# If you don't specify an existing secret, a new one will be created
+serverPasswordSecret:
+  useExisting: false
+  existingSecretName: ""
+
+# Persistent Volume Settings
+persistence:
+  enabled: true
+  storageClassName: "proxmox"  # Adjust based on your cluster
+  accessMode: ReadWriteOnce
+  size: 10Gi  # Hytale needs at least 6GB
+
+# Hytale Server Configuration
+serverConfig:
+  # ===== Core Settings =====
+  TZ: "UTC"
+  DEBUG: "FALSE"
+  PROD: "FALSE"
+  SERVER_PORT: "5520"
+  SERVER_IP: "0.0.0.0"
+  JAVA_ARGS: ""
+
+  # ===== Hytale Cache Settings =====
+  HYTALE_CACHE: "FALSE"  # Enables AOT cache for faster startup (7 seconds)
+  HYTALE_CACHE_DIR: "./Server/HytaleServer.aot"
+
+  # ===== Authentication & Access =====
+  HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
+  HYTALE_ALLOW_OP: "FALSE"
+  HYTALE_AUTH_MODE: ""  # Options: authenticated (default), offline, insecure
+  HYTALE_IDENTITY_TOKEN: ""
+  HYTALE_SESSION_TOKEN: ""
+  HYTALE_OWNER_NAME: ""
+  HYTALE_OWNER_UUID: ""
+
+  # ===== Backup Configuration =====
+  HYTALE_BACKUP: "FALSE"  # Create backup on startup
+  HYTALE_BACKUP_DIR: "./backups"
+  HYTALE_BACKUP_FREQUENCY: ""  # Frequency in minutes
+  HYTALE_BACKUP_MAX_COUNT: "5"  # Maximum backups to keep
+
+  # ===== Server Options =====
+  HYTALE_BARE: "FALSE"  # Run without loading worlds/binding ports
+  HYTALE_BOOT_COMMAND: ""  # Command to run on boot
+  HYTALE_CLIENT_PID: ""
+  HYTALE_DISABLE_ASSET_COMPARE: "FALSE"
+  HYTALE_DISABLE_CPB_BUILD: "FALSE"
+  HYTALE_DISABLE_FILE_WATCHER: "FALSE"
+  HYTALE_DISABLE_SENTRY: "TRUE"  # Disable Sentry error reporting
+  HYTALE_EVENT_DEBUG: "FALSE"
+  HYTALE_FORCE_NETWORK_FLUSH: "true"
+
+  # ===== Schema & Validation =====
+  HYTALE_GENERATE_SCHEMA: "FALSE"
+  HYTALE_VALIDATE_ASSETS: "FALSE"
+  HYTALE_VALIDATE_PREFABS: ""
+  HYTALE_VALIDATE_WORLD_GEN: "FALSE"
+  HYTALE_SHUTDOWN_AFTER_VALIDATE: "FALSE"
+
+  # ===== Logging =====
+  HYTALE_LOG: ""  # KeyValueHolder format
+
+  # ===== World & Content =====
+  HYTALE_MIGRATE_WORLDS: ""
+  HYTALE_MIGRATIONS: ""
+  HYTALE_UNIVERSE: ""
+  HYTALE_WORLD_GEN: ""
+  HYTALE_PREFAB_CACHE: ""
+
+  # ===== Mods & Plugins =====
+  HYTALE_MODS: ""
+  HYTALE_EARLY_PLUGINS: ""
+
+  # ===== Network & Transport =====
+  HYTALE_TRANSPORT: ""  # Options: QUIC (default) or other supported types
+  HYTALE_SINGLEPLAYER: "FALSE"
+
+  # ===== Version Control =====
+  HYTALE_VERSION: "FALSE"  # Print version and exit
+
+  # ===== config.json Settings =====
+  # These settings are written to the server's config.json file
+  HYTALE_SERVER_NAME: "Kubelize Hytale Server"
+  HYTALE_MOTD: "Welcome to our Hytale server!"
+  HYTALE_PASSWORD: ""  # Leave empty for public server
+  HYTALE_MAX_PLAYERS: "100"
+  HYTALE_MAX_VIEW_RADIUS: "32"
+  HYTALE_COMPRESSION: "false"  # Local compression enabled
+  HYTALE_WORLD: "default"  # Default world name
+  HYTALE_GAMEMODE: "Adventure"  # Options: Adventure, Creative
+
+# Service Account Configuration
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+# Pod annotations and labels
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+
+# Service for game ports
+gameService:
+  annotations: {}
+    # "lbipam.cilium.io/ips": "10.130.5.240"  # Uncomment and set your IP for LoadBalancer
+  type: ClusterIP  # Change to LoadBalancer or NodePort for external access
+  ports:
+    - name: gameport-udp
+      protocol: UDP
+      port: 5520
+      targetPort: 5520
+    - name: gameport-tcp
+      protocol: TCP
+      port: 5520
+      targetPort: 5520
+
+# Web service (optional - for future web admin panel)
+webService:
+  enabled: false
+  type: ClusterIP
+  ports:
+    - name: webadmin
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+# Ingress configuration (disabled by default)
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: hytale.example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+# Resource limits and requests
+resources:
+  limits:
+    cpu: "4"
+    memory: "8Gi"
+  requests:
+    cpu: "2"
+    memory: "4Gi"
+
+# Liveness and Readiness Probes
+livenessProbe:
+  enabled: false
+
+readinessProbe:
+  enabled: false
+
+# Volume mounts
+volumeMounts:
+  - name: storage
+    mountPath: /home/kubelize/server
+  - name: server-config
+    mountPath: /home/kubelize/gameserver/config-data/config-values.yaml
+    subPath: config-values.yaml
+
+# Volumes
+volumes:
+  - name: storage
+    persistentVolumeClaim:
+      claimName: "{{ .Release.Name }}"
+  - name: server-config
+    configMap:
+      name: server-config
+
+# Node selector, affinity, and tolerations
+nodeSelector: {}
+
+affinity: {}
+
+tolerations: []

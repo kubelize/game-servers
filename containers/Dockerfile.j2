@@ -25,21 +25,13 @@ RUN apt remove --purge -y curl && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 {{end}}
 COPY /bin/{{ .EnvironmentName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
-{{if eq .Type "steam"}}
-COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/steam/config-data/
+
+COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/server/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/steam
+    chown -R kubelize:kubelize /home/kubelize/server
 
-WORKDIR /home/kubelize/steam
-{{else}}
-COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/gameserver/config-data/
-
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/gameserver
-
-WORKDIR /home/kubelize/gameserver
-{{end}}
+WORKDIR /home/kubelize/server
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]

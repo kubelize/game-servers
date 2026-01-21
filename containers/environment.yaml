@@ -72,4 +72,5 @@ environment:
     additional_dependencies:
       - temurin-25-jdk
       - wget
+      - unzip
 

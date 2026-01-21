@@ -15,13 +15,12 @@ LABEL maintainer="kubelize@kubelize.com"
 
 COPY /bin/valheim/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-COPY /bin/valheim/serverconfig.template /home/kubelize/steam/config-data/
+COPY /bin/valheim/serverconfig.template /home/kubelize/server/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/steam
+    chown -R kubelize:kubelize /home/kubelize/server
 
-WORKDIR /home/kubelize/steam
-
+WORKDIR /home/kubelize/server
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]
