@@ -1,0 +1,11 @@
+# Ensure shell scripts always use LF (Unix) line endings
+*.sh text eol=lf
+
+# Ensure Dockerfiles use LF
+Dockerfile* text eol=lf
+
+# Let YAML, Go, and other text files use auto line ending conversion
+*.yaml text
+*.yml text
+*.go text
+*.md text
