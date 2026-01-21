@@ -1,28 +1,75 @@
+# Game Server Environment Configuration
+# 
+# Each environment defines a game server configuration that will generate a Dockerfile
+# 
+# Fields:
+#   name:                   Internal name of the game (used for directory structure)
+#   type:                   Server type - "steam" for Steam games, "java" for Java-based games
+#   steam_app_id:           Steam application ID (required only for type: steam)
+#   dockerfile_ext:         File extension for the generated Dockerfile (e.g., Dockerfile.{ext})
+#   base:                   Base image identifier (ln=linux, we=wine, jv=java)
+#   maintainer:             Email address of the maintainer
+#   additional_dependencies: List of additional apt packages to install
+
 environment:
+  # ====================================================================
+  # STEAM-BASED GAME SERVERS
+  # ====================================================================
+  
   - name: seven_days_to_die
+    type: steam
     steam_app_id: 294420
     dockerfile_ext: sdtd
     base: ln
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []
+      # Uncomment for debugging tools:
       # - iputils-ping
       # - netcat
+
   - name: palworld
+    type: steam
     steam_app_id: 2394010
     dockerfile_ext: pw
     base: ln
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []
+
   - name: valheim
+    type: steam
     steam_app_id: 896660
     dockerfile_ext: vh
     base: ln
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []
+
   - name: conan_exiles
+    type: steam
     steam_app_id: 443030
     dockerfile_ext: ce
     base: we
     maintainer: "kubelize@kubelize.com"
     additional_dependencies: []
+
+  # ====================================================================
+  # JAVA-BASED GAME SERVERS
+  # ====================================================================
+
+  - name: minecraft
+    type: java
+    dockerfile_ext: mc
+    base: jv
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies:
+      - openjdk-17-jre-headless
+      - wget
+
+  - name: hytale
+    type: java
+    dockerfile_ext: ht
+    base: jv
+    maintainer: "kubelize@kubelize.com"
+    additional_dependencies:
+      - temurin-25-jdk
+      - wget
 

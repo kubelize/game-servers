@@ -4,9 +4,12 @@ FROM {{.BaseDockerfile}}
 # Set game name
 LABEL server="{{.EnvironmentName}}"
 
-# Multipaper Version
+# Set type
+LABEL type="{{.Type}}"
+{{if eq .Type "steam"}}
+# Steam App ID
 LABEL steam_app_id="{{.SteamAppID}}"
-
+{{end}}
 # Set Maintainer
 LABEL maintainer="{{.Maintainer}}"
 {{if .AdditionalDeps}}
@@ -22,12 +25,21 @@ RUN apt remove --purge -y curl && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 {{end}}
 COPY /bin/{{ .EnvironmentName }}/entrypoint.sh /usr/local/bin/entrypoint.sh
+{{if eq .Type "steam"}}
 COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam
 
 WORKDIR /home/kubelize/steam
+{{else}}
+COPY /bin/{{ .EnvironmentName }}/serverconfig.template /home/kubelize/gameserver/config-data/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh && \
+    chown -R kubelize:kubelize /home/kubelize/gameserver
+
+WORKDIR /home/kubelize/gameserver
+{{end}}
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]

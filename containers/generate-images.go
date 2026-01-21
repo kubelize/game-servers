@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"text/template"
@@ -11,6 +12,7 @@ import (
 // Environment represents the structure for each Environment configuration in the YAML file
 type Environment struct {
 	Name				string   `yaml:"name"`
+	Type				string   `yaml:"type"`
 	DockerfileExt		string   `yaml:"dockerfile_ext"`
 	Base				string   `yaml:"base"`
 	Maintainer			string   `yaml:"maintainer"`
@@ -26,6 +28,7 @@ type Config struct {
 // TemplateData is used to pass data to the Dockerfile template
 type TemplateData struct {
 	EnvironmentName		string
+	Type				string
 	BaseDockerfile    	string
 	Maintainer         	string
 	SteamAppID  	   	string
@@ -33,6 +36,11 @@ type TemplateData struct {
 }
 
 func main() {
+	// Parse command-line flags
+	baseVersion := flag.String("base-version", "0.2.3", "Base image version")
+	tagSuffix := flag.String("tag-suffix", "", "Tag suffix (e.g., -alpha, -beta)")
+	flag.Parse()
+
 	// Load the YAML file
 	data, err := ioutil.ReadFile("environment.yaml")
 	if err != nil {
@@ -71,7 +79,7 @@ func main() {
 
 	// Generate Dockerfiles for each environment
 	for _, environment := range config.Environment {
-		baseDockerfile := fmt.Sprintf("kubelize/game-servers:0.2.2-%s", environment.Base)
+		baseDockerfile := fmt.Sprintf("kubelize/game-servers:%s-%s%s", *baseVersion, environment.Base, *tagSuffix)
 		outputFileName := fmt.Sprintf("Dockerfile.%s", environment.DockerfileExt)
 
 		// Create the output file
@@ -85,6 +93,7 @@ func main() {
 		// Prepare the template data
 		templateData := TemplateData{
 			EnvironmentName:	environment.Name,
+			Type:				environment.Type,
 			BaseDockerfile: 	baseDockerfile,
 			Maintainer:     	environment.Maintainer,
 			SteamAppID: 		environment.SteamAppID,

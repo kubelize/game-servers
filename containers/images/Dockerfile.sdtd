@@ -1,22 +1,27 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.2.2-ln
+FROM kubelize/game-servers:0.2.3-ln-alpha
 
 # Set game name
 LABEL server="seven_days_to_die"
 
-# Multipaper Version
+# Set type
+LABEL type="steam"
+
+# Steam App ID
 LABEL steam_app_id="294420"
 
 # Set Maintainer
 LABEL maintainer="kubelize@kubelize.com"
 
 COPY /bin/seven_days_to_die/entrypoint.sh /usr/local/bin/entrypoint.sh
+
 COPY /bin/seven_days_to_die/serverconfig.template /home/kubelize/steam/config-data/
 
 RUN chmod +x /usr/local/bin/entrypoint.sh && \
     chown -R kubelize:kubelize /home/kubelize/steam
 
 WORKDIR /home/kubelize/steam
+
 USER kubelize
 
 ENTRYPOINT ["entrypoint.sh"]
