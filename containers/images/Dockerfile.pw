@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.2.3-ln-alpha
+FROM kubelize/game-servers:0.3.0-ln-alpha
 
 # Set game name
 LABEL server="palworld"
@@ -13,14 +13,12 @@ LABEL steam_app_id="2394010"
 # Set Maintainer
 LABEL maintainer="kubelize@kubelize.com"
 
-COPY /bin/palworld/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Copy server config template to protected location (not overwritten by PVC mounts)
+COPY images/bin/palworld/serverconfig.template /usr/local/share/game-templates/serverconfig.template
 
-COPY /bin/palworld/serverconfig.template /home/kubelize/server/config-data/
-
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/server
+RUN chown -R kubelize:kubelize /home/kubelize/server
 
 WORKDIR /home/kubelize/server
 USER kubelize
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["gamekeeper", "start", "--game", "palworld"]

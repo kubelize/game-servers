@@ -51,6 +51,9 @@ serverConfig:
   HYTALE_CACHE: "FALSE"  # Enables AOT cache for faster startup (7 seconds)
   HYTALE_CACHE_DIR: "./Server/HytaleServer.aot"
 
+  # ===== Auto-Update Settings =====
+  HYTALE_AUTO_UPDATE: "TRUE"  # Check for and download game updates on server start
+
   # ===== Authentication & Access =====
   HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
   HYTALE_ALLOW_OP: "FALSE"

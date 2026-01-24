@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.2.3-jv-alpha
+FROM kubelize/game-servers:0.3.0-jv-alpha
 
 # Set game name
 LABEL server="minecraft"
@@ -21,14 +21,12 @@ RUN apt remove --purge -y curl && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY /bin/minecraft/entrypoint.sh /usr/local/bin/entrypoint.sh
+# Copy server config template to protected location (not overwritten by PVC mounts)
+COPY images/bin/minecraft/serverconfig.template /usr/local/share/game-templates/serverconfig.template
 
-COPY /bin/minecraft/serverconfig.template /home/kubelize/server/config-data/
-
-RUN chmod +x /usr/local/bin/entrypoint.sh && \
-    chown -R kubelize:kubelize /home/kubelize/server
+RUN chown -R kubelize:kubelize /home/kubelize/server
 
 WORKDIR /home/kubelize/server
 USER kubelize
 
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["gamekeeper", "start", "--game", "minecraft"]

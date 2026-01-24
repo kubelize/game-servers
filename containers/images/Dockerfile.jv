@@ -9,19 +9,34 @@ RUN apt update && \
     echo "deb [signed-by=/usr/share/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb bookworm main" > /etc/apt/sources.list.d/adoptium.list && \
     apt update
 
-# Install base packages and setup
+# Install base packages
 RUN apt upgrade -y && \
     apt install --no-install-recommends --no-install-suggests -y \
+    temurin-25-jdk \
     curl \
     nano \
     yq \
+    unzip \
     locales && \
     curl -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.11.2/gomplate_linux-amd64 -o /usr/local/bin/gomplate && \
     chmod +x /usr/local/bin/gomplate && \
     adduser --disabled-password --gecos "" kubelize && \
     mkdir -p /home/kubelize/gameserver/config-data && \
     chown -R kubelize:kubelize /home/kubelize && \
-    apt remove --purge -y curl wget && \
+    apt remove --purge -y wget && \
     apt autoremove -y && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install gotty for web console
+RUN curl -sSL https://github.com/yudai/gotty/releases/download/v1.0.1/gotty_linux_amd64.tar.gz | tar -C /usr/local/bin -xz && \
+    chmod +x /usr/local/bin/gotty && \
+    apt remove --purge -y curl && \
+    apt autoremove -y && \
+    apt clean
+
+# Copy GameKeeper binary
+COPY gamekeeper/gamekeeper /usr/local/bin/gamekeeper
+RUN chmod +x /usr/local/bin/gamekeeper && \
+    mkdir -p /home/kubelize/server /usr/local/share/game-templates && \
+    chown -R kubelize:kubelize /home/kubelize/server

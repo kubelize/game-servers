@@ -10,7 +10,7 @@ useStatefulSet: false
 image:
   repository: kubelize/game-servers
   pullPolicy: Always
-  tag: "0.1.2-ht-alpha"
+  tag: "0.2.0-ht-alpha"
 
 imagePullSecrets: []
 nameOverride: "hytale-lobby"
@@ -25,7 +25,7 @@ persistence:
   enabled: true
   storageClassName: "proxmox"
   accessMode: ReadWriteOnce
-  size: 10Gi
+  size: 20Gi  # Increased for full server persistence
 
 serverConfig:
   # ===== Core Settings =====
@@ -34,20 +34,23 @@ serverConfig:
   PROD: "FALSE"
   SERVER_PORT: "5520"
   SERVER_IP: "0.0.0.0"
-  JAVA_ARGS: "-Xms2G -Xmx4G"
+  JAVA_ARGS: "-Xms4G -Xmx6G -XX:+UseG1GC -XX:MaxGCPauseMillis=50 -XX:+ParallelRefProcEnabled -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=30 -XX:G1MaxNewSizePercent=40 -XX:G1HeapRegionSize=8M -XX:G1ReservePercent=20 -XX:G1HeapWastePercent=5 -XX:G1MixedGCCountTarget=4 -XX:InitiatingHeapOccupancyPercent=15"
 
   # ===== Hytale Cache Settings =====
   HYTALE_CACHE: "FALSE"
   HYTALE_CACHE_DIR: "./Server/HytaleServer.aot"
 
+  # ===== Auto-Update Settings =====
+  HYTALE_AUTO_UPDATE: "TRUE"  # Check for and download game updates on server start
+
   # ===== Authentication & Access =====
   HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
   HYTALE_ALLOW_OP: "TRUE"  # Lobby admins can manage
   HYTALE_AUTH_MODE: ""  # authenticated (default)
-  HYTALE_IDENTITY_TOKEN: ""
-  HYTALE_SESSION_TOKEN: ""
-  HYTALE_OWNER_NAME: ""
-  HYTALE_OWNER_UUID: ""
+  HYTALE_IDENTITY_TOKEN: ""  # Get via /auth login command
+  HYTALE_SESSION_TOKEN: ""  # Get via /auth login command - REQUIRED for authenticated multiplayer
+  HYTALE_OWNER_NAME: "Kubeagon"  # Your Hytale username
+  HYTALE_OWNER_UUID: "014fefc5-2229-4ed7-92b4-4e54d2321024"  # Your player UUID
 
   # ===== Backup Configuration =====
   HYTALE_BACKUP: "TRUE"
@@ -99,10 +102,13 @@ serverConfig:
   HYTALE_MOTD: "Welcome! Select a world to play"
   HYTALE_PASSWORD: ""  # Public lobby
   HYTALE_MAX_PLAYERS: "200"  # Can handle more since it's just a hub
-  HYTALE_MAX_VIEW_RADIUS: "12"  # Lower for lobby (384 blocks)
+  HYTALE_MAX_VIEW_RADIUS: "4"  # 128 blocks (minimal for lobby)
   HYTALE_COMPRESSION: "false"
-  HYTALE_WORLD: "lobby"  # Small lobby world
+  HYTALE_WORLD: "default"  # Using custom lobby world
   HYTALE_GAMEMODE: "Adventure"
+  
+  # ===== Web Console Settings =====
+  CONSOLE_PORT: "8080"  # Gotty web console port
 
 serviceAccount:
   create: true
@@ -138,7 +144,13 @@ gameService:
       targetPort: 5520
 
 webService:
-  enabled: false
+  enabled: true
+  type: ClusterIP
+  ports:
+    - name: console
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
 
 ingress:
   enabled: false
@@ -146,11 +158,11 @@ ingress:
 # Lobby server is lighter
 resources:
   limits:
+    cpu: "4"
+    memory: "8Gi"
+  requests:
     cpu: "2"
     memory: "4Gi"
-  requests:
-    cpu: "1"
-    memory: "2Gi"
 
 livenessProbe:
   enabled: false

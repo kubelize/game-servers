@@ -105,8 +105,24 @@ fi
 # ============================================
 log_section "Hytale Server Installation"
 
+# Enable auto-update by default
+HYTALE_AUTO_UPDATE="${HYTALE_AUTO_UPDATE:-TRUE}"
+
+# Determine if we need to run the downloader
+SHOULD_DOWNLOAD=false
+
 if [ ! -f "$SERVER_JAR_PATH" ] || [ ! -f "$ASSETS_ZIP" ]; then
     log_info "Server files not found. Initiating download..."
+    SHOULD_DOWNLOAD=true
+elif [ "$HYTALE_AUTO_UPDATE" = "TRUE" ]; then
+    log_info "Checking for game file updates..."
+    SHOULD_DOWNLOAD=true
+else
+    log_step "Hytale server files"
+    echo -e "${GREEN}already downloaded (auto-update disabled)${NC}"
+fi
+
+if [ "$SHOULD_DOWNLOAD" = true ]; then
     echo ""
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo -e "${YELLOW}  AUTHENTICATION REQUIRED${NC}"
@@ -123,36 +139,43 @@ if [ ! -f "$SERVER_JAR_PATH" ] || [ ! -f "$ASSETS_ZIP" ]; then
     echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
     echo ""
     
-    # Run the downloader
+    # Run the downloader from the GAME_DIR so files download to the right place
+    cd "$GAME_DIR"
     if ! "$HYTALE_DOWNLOADER"; then
-        log_error "Failed to download Hytale server files"
+        log_error "Failed to download/update Hytale server files"
         echo ""
         echo -e "${YELLOW}Troubleshooting Tips:${NC}"
         echo -e "  • Ensure you have a valid Hytale account"
         echo -e "  • Check your internet connection"
         echo -e "  • Mount /etc/machine-id for persistent authentication"
         echo -e "    Example: -v /etc/machine-id:/etc/machine-id:ro"
+        echo -e "  • To disable auto-updates, set HYTALE_AUTO_UPDATE=FALSE"
         exit 1
     fi
     
-    # Extract the downloaded ZIP file
+    # Extract the downloaded ZIP file (only if a new one was downloaded)
     log_step "Extracting server files"
     DOWNLOADED_ZIP=$(ls -t "$GAME_DIR"/*.zip 2>/dev/null | head -1)
     if [ -n "$DOWNLOADED_ZIP" ] && [ -f "$DOWNLOADED_ZIP" ]; then
         if unzip -q -o "$DOWNLOADED_ZIP" -d "$GAME_DIR"; then
             log_success
             log_info "Extracted: $(basename "$DOWNLOADED_ZIP")"
+            
+            # Check if this was an update
+            if [ -f "$SERVER_JAR_PATH" ]; then
+                log_info "Server files updated to latest version"
+            fi
         else
             log_error "Failed to extract server files"
             exit 1
         fi
-    else
+    elif [ ! -f "$SERVER_JAR_PATH" ]; then
         log_error "No ZIP file found to extract"
         exit 1
+    else
+        log_success
+        log_info "Server files are already up to date"
     fi
-else
-    log_step "Hytale server files"
-    echo -e "${GREEN}already downloaded${NC}"
 fi
 
 # ============================================
@@ -161,7 +184,7 @@ fi
 log_section "Server Configuration"
 
 CONFIG_JSON="$BASE_DIR/config.json"
-CONFIG_TEMPLATE="$CONFIG_DATA_DIR/serverconfig.template"
+CONFIG_TEMPLATE="/usr/local/share/game-templates/serverconfig.template"
 
 # Check if config.json already exists
 if [ ! -f "$CONFIG_JSON" ]; then

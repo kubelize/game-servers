@@ -43,6 +43,8 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          stdin: true
+          tty: true
           ports:
             {{- range .Values.gameService.ports }}
             - name: {{ .name }}
@@ -72,7 +74,7 @@ spec:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
             {{- else }}
             - name: storage
-              mountPath: /home/kubelize/server/data
+              mountPath: {{ if contains "ht" .Values.image.tag }}/home/kubelize/server{{ else }}/home/kubelize/server/data{{ end }}
             {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) }}
             - name: server-config
               mountPath: {{ if contains "ht" .Values.image.tag }}/home/kubelize/server/config-data/config-values.yaml{{ else }}/home/kubelize/steam/config-data/config-values.yaml{{ end }}

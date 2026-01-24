@@ -12,7 +12,7 @@ useStatefulSet: true
 image:
   repository: kubelize/game-servers
   pullPolicy: Always
-  tag: "0.1.2-ht-alpha"
+  tag: "0.1.4-ht-alpha"
 
 imagePullSecrets: []
 nameOverride: "hytale-survival"  # Change per world: survival, creative, minigames, etc.
@@ -42,9 +42,12 @@ serverConfig:
   HYTALE_CACHE: "FALSE"
   HYTALE_CACHE_DIR: "./Server/HytaleServer.aot"
 
+  # ===== Auto-Update Settings =====
+  HYTALE_AUTO_UPDATE: "TRUE"  # Check for and download game updates on server start
+
   # ===== Authentication & Access =====
   HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
-  HYTALE_ALLOW_OP: "FALSE"  # Only lobby admins
+  HYTALE_ALLOW_OP: "FALSE"  # Only lobby adminsX
   HYTALE_AUTH_MODE: ""  # authenticated (default)
   HYTALE_IDENTITY_TOKEN: ""
   HYTALE_SESSION_TOKEN: ""

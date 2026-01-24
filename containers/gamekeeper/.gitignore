@@ -1,0 +1,15 @@
+# GameKeeper Build
+bin/
+gamekeeper
+gamekeeper.exe
+
+# Go workspace
+vendor/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

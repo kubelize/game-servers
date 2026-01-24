@@ -15,14 +15,14 @@ BUILDER ?= docker
 TAG_SUFFIX ?= -alpha
 
 # Version scheme: BASE_VERSION-{base_type}
-BASE_VERSION ?= 0.2.3
+BASE_VERSION ?= 0.3.0
 # Version scheme: GAME_VERSION-{game_ext}
-SDTD_VERSION ?= 0.3.5
-PW_VERSION ?= 0.1.0
-VH_VERSION ?= 0.1.0
-CE_VERSION ?= 0.1.1
-MC_VERSION ?= 0.1.0
-HT_VERSION ?= 0.1.2
+SDTD_VERSION ?= 0.4.0
+PW_VERSION ?= 0.2.0
+VH_VERSION ?= 0.2.0
+CE_VERSION ?= 0.2.0
+MC_VERSION ?= 0.2.0
+HT_VERSION ?= 0.2.0
 
 # Base images
 BASE_IMAGES = ln we jv
@@ -34,11 +34,17 @@ GAME_IMAGES = sdtd pw vh ce mc ht
 GAME_TARGETS = $(addprefix build-game-,$(GAME_IMAGES))
 PUSH_GAME_TARGETS = $(addprefix push-game-,$(GAME_IMAGES))
 
-.PHONY: all generate build build-base build-games push push-base push-games clean help
+.PHONY: all generate build build-base build-games push push-base push-games clean help build-gamekeeper
 
 # Default target
-all: generate build push
+all: build-gamekeeper generate build push
 	@echo "✓ All images built and pushed successfully"
+
+# Build GameKeeper binary for Linux
+build-gamekeeper:
+	@echo "→ Building GameKeeper binary for Linux..."
+	cd gamekeeper && $(MAKE) build
+	@echo "✓ GameKeeper binary built"
 
 # Generate Dockerfiles from template
 generate:
@@ -58,19 +64,22 @@ build-base-ln:
 	@echo "→ Building base image: ln (Linux)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(BASE_VERSION)-ln$(TAG_SUFFIX) \
-		-f images/Dockerfile.ln images/
+		-f images/Dockerfile.ln \
+		.
 
 build-base-we:
 	@echo "→ Building base image: we (Wine)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(BASE_VERSION)-we$(TAG_SUFFIX) \
-		-f images/Dockerfile.we images/
+		-f images/Dockerfile.we \
+		.
 
 build-base-jv:
 	@echo "→ Building base image: jv (Java)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(BASE_VERSION)-jv$(TAG_SUFFIX) \
-		-f images/Dockerfile.jv images/
+		-f images/Dockerfile.jv \
+		.
 
 # Build game server images
 build-games: $(GAME_TARGETS)
@@ -80,37 +89,43 @@ build-game-sdtd:
 	@echo "→ Building game: Seven Days to Die (sdtd)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(SDTD_VERSION)-sdtd$(TAG_SUFFIX) \
-		-f images/Dockerfile.sdtd images/
+		-f images/Dockerfile.sdtd \
+		.
 
 build-game-pw:
 	@echo "→ Building game: Palworld (pw)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(PW_VERSION)-pw$(TAG_SUFFIX) \
-		-f images/Dockerfile.pw images/
+		-f images/Dockerfile.pw \
+		.
 
 build-game-vh:
 	@echo "→ Building game: Valheim (vh)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(VH_VERSION)-vh$(TAG_SUFFIX) \
-		-f images/Dockerfile.vh images/
+		-f images/Dockerfile.vh \
+		.
 
 build-game-ce:
 	@echo "→ Building game: Conan Exiles (ce)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(CE_VERSION)-ce$(TAG_SUFFIX) \
-		-f images/Dockerfile.ce images/
+		-f images/Dockerfile.ce \
+		.
 
 build-game-mc:
 	@echo "→ Building game: Minecraft (mc)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(MC_VERSION)-mc$(TAG_SUFFIX) \
-		-f images/Dockerfile.mc images/
+		-f images/Dockerfile.mc \
+		.
 
 build-game-ht:
 	@echo "→ Building game: Hytale (ht)"
 	$(BUILDER) build --platform $(PLATFORM) \
 		-t $(REGISTRY):$(HT_VERSION)-ht$(TAG_SUFFIX) \
-		-f images/Dockerfile.ht images/
+		-f images/Dockerfile.ht \
+		.
 
 # Push all images
 push: push-base push-games

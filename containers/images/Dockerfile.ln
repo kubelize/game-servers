@@ -22,3 +22,9 @@ RUN apt update && apt upgrade -y && \
     apt autoremove -y && \
     apt clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Copy GameKeeper binary
+COPY gamekeeper/gamekeeper /usr/local/bin/gamekeeper
+RUN chmod +x /usr/local/bin/gamekeeper && \
+    mkdir -p /home/kubelize/server /usr/local/share/game-templates && \
+    chown -R kubelize:kubelize /home/kubelize/server
