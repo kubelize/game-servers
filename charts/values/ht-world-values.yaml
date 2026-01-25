@@ -12,7 +12,7 @@ useStatefulSet: true
 image:
   repository: kubelize/game-servers
   pullPolicy: Always
-  tag: "0.1.4-ht-alpha"
+  tag: "0.2.8-ht-alpha"
 
 imagePullSecrets: []
 nameOverride: "hytale-survival"  # Change per world: survival, creative, minigames, etc.
@@ -47,12 +47,12 @@ serverConfig:
 
   # ===== Authentication & Access =====
   HYTALE_ACCEPT_EARLY_PLUGINS: "FALSE"
-  HYTALE_ALLOW_OP: "FALSE"  # Only lobby adminsX
+  HYTALE_ALLOW_OP: "TRUE"  # Allow ops to manage
   HYTALE_AUTH_MODE: ""  # authenticated (default)
   HYTALE_IDENTITY_TOKEN: ""
   HYTALE_SESSION_TOKEN: ""
-  HYTALE_OWNER_NAME: ""
-  HYTALE_OWNER_UUID: ""
+  HYTALE_OWNER_NAME: "Kubeagon"
+  HYTALE_OWNER_UUID: "014fefc5-2229-4ed7-92b4-4e54d2321024"
 
   # ===== Backup Configuration =====
   HYTALE_BACKUP: "TRUE"
@@ -100,7 +100,7 @@ serverConfig:
   HYTALE_VERSION: "FALSE"
 
   # ===== config.json Settings =====
-  HYTALE_SERVER_NAME: "🌲 Survival World"  # Change per world
+  HYTALE_SERVER_NAME: "🌲 Kubelize Network - Survival"
   HYTALE_MOTD: "Explore, build, survive!"
   HYTALE_PASSWORD: ""  # Usually empty - access controlled by lobby
   HYTALE_MAX_PLAYERS: "50"
@@ -108,6 +108,22 @@ serverConfig:
   HYTALE_COMPRESSION: "false"
   HYTALE_WORLD: "world"  # Main world name
   HYTALE_GAMEMODE: "Adventure"  # or "Creative"
+
+  # ===== Web Console Settings =====
+  CONSOLE_PORT: "8080"  # Gotty web console port
+
+# CurseForge Mod Configuration
+curseforge:
+  mods:
+    - server-teleporters
+  apiKeySecret:
+    name: "curseforge-api-key"
+    key: "api-key"
+  releaseChannel: "release"
+  autoUpdate: true
+  failOnError: false
+  prune: false
+  gameVersionFilter: ""
 
 serviceAccount:
   create: true
@@ -132,7 +148,7 @@ securityContext:
 # Can use ClusterIP for internal-only access
 gameService:
   annotations: {}
-  type: ClusterIP  # Internal only - players referred from lobby
+  type: LoadBalancer  # External access for cross-server teleport
   ports:
     - name: gameport-udp
       protocol: UDP
@@ -144,7 +160,13 @@ gameService:
       targetPort: 5521
 
 webService:
-  enabled: false
+  enabled: true
+  type: ClusterIP
+  ports:
+    - name: console
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
 
 ingress:
   enabled: false
