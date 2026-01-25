@@ -17,6 +17,7 @@ RUN apt upgrade -y && \
     nano \
     yq \
     unzip \
+    tmux \
     locales && \
     curl -sSL https://github.com/hairyhenderson/gomplate/releases/download/v3.11.2/gomplate_linux-amd64 -o /usr/local/bin/gomplate && \
     chmod +x /usr/local/bin/gomplate && \

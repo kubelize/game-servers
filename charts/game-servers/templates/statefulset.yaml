@@ -58,6 +58,14 @@ spec:
               protocol: {{ .protocol }}
             {{- end }}
             {{- end }}
+          {{- if and .Values.curseforge .Values.curseforge.apiKeySecret }}
+          env:
+            - name: HYTALE_CURSEFORGE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.curseforge.apiKeySecret.name }}
+                  key: {{ .Values.curseforge.apiKeySecret.key | default "api-key" }}
+          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe.config | nindent 12 }}

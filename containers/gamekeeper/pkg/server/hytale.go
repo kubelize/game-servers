@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 
 	"github.com/kubelize/game-servers/gamekeeper/pkg/config"
+	"github.com/kubelize/game-servers/gamekeeper/pkg/curseforge"
 	"github.com/kubelize/game-servers/gamekeeper/pkg/output"
 	"github.com/kubelize/game-servers/gamekeeper/pkg/rcon"
 )
@@ -104,8 +105,29 @@ func (h *HytaleManager) CheckUpdate() (bool, string, error) {
 }
 
 func (h *HytaleManager) InstallMods() error {
+	// Install CurseForge mods if configured
+	cfMods := h.Config.GetString("HYTALE_CURSEFORGE_MODS", "")
+	if cfMods != "" {
+		output.Step("Installing CurseForge mods")
+		// Pass BaseDir for mods (Hytale looks in ./mods relative to working dir)
+		// and DataDir for state/cache files
+		cfManager, err := curseforge.NewManager(h.Config, h.BaseDir, h.DataDir)
+		if err != nil {
+			// If API key not configured, just warn and continue
+			output.Warning(fmt.Sprintf("CurseForge setup failed: %v", err))
+		} else {
+			if err := cfManager.InstallMods(cfMods); err != nil {
+				return fmt.Errorf("CurseForge mod installation failed: %w", err)
+			}
+			output.Success()
+		}
+	}
+
+	// Install regular mods from config
 	if !h.Config.Mods.Enabled || len(h.Config.Mods.Mods) == 0 {
-		output.Info("No mods configured")
+		if cfMods == "" {
+			output.Info("No mods configured")
+		}
 		return nil
 	}
 
@@ -186,36 +208,11 @@ func (h *HytaleManager) Start() error {
 		"--bind", fmt.Sprintf("%s:%s", serverIP, serverPort),
 	)
 
-	// Create console pipe and start gotty web console
-	consolePipe := "/tmp/gameserver-console.pipe"
+	// Use tmux with pipe-pane for kubectl logs + gotty for web access
 	consolePort := h.Config.GetString("CONSOLE_PORT", "8080")
+	sessionName := h.Config.GetString("TMUX_SESSION_NAME", "hytale-server")
 	
-	if err := rcon.CreateConsolePipe(consolePipe); err != nil {
-		return fmt.Errorf("failed to create console pipe: %w", err)
-	}
-	output.Info(fmt.Sprintf("Console pipe created at: %s", consolePipe))
-
-	// Start gotty console in background
-	if err := rcon.StartGottyConsole(consolePort, consolePipe); err != nil {
-		output.Warning(fmt.Sprintf("Failed to start web console: %v", err))
-	} else {
-		output.Info(fmt.Sprintf("Web console available on port %s", consolePort))
-		output.Info(fmt.Sprintf("Access via: kubectl port-forward <pod> %s:%s", consolePort, consolePort))
-	}
-
-	// Open the console pipe for stdin
-	pipe, err := rcon.OpenConsolePipe(consolePipe)
-	if err != nil {
-		return fmt.Errorf("failed to open console pipe: %w", err)
-	}
-
-	cmd := exec.Command("java", args...)
-	cmd.Dir = h.BaseDir
-	cmd.Stdin = pipe       // Read from named pipe
-	cmd.Stdout = os.Stdout // Normal logging - kubectl logs works!
-	cmd.Stderr = os.Stderr // Normal logging - kubectl logs works!
-
-	return cmd.Run()
+	return rcon.StartServerWithTmux(consolePort, sessionName, "java", args, h.BaseDir)
 }
 
 func (h *HytaleManager) Stop() error {

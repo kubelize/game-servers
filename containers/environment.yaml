@@ -73,4 +73,5 @@ environment:
       - temurin-25-jdk
       - wget
       - unzip
+      - tmux
 

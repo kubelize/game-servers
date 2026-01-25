@@ -7,6 +7,8 @@ metadata:
     {{- include "game-servers.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       {{- include "game-servers.selectorLabels" . | nindent 6 }}
@@ -54,6 +56,14 @@ spec:
               protocol: {{ .protocol }}
             {{- end }}
             {{- end }}
+          {{- if and .Values.curseforge .Values.curseforge.apiKeySecret }}
+          env:
+            - name: HYTALE_CURSEFORGE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.curseforge.apiKeySecret.name }}
+                  key: {{ .Values.curseforge.apiKeySecret.key | default "api-key" }}
+          {{- end }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe.config | nindent 12 }}

@@ -58,7 +58,7 @@ func Load(path string) (*Config, error) {
 	}
 
 	// Load mods config if separate file exists
-	modsPath := "/config-data/mods.yaml"
+	modsPath := "./config-data/mods.yaml"
 	if _, err := os.Stat(modsPath); err == nil {
 		data, err := os.ReadFile(modsPath)
 		if err != nil {

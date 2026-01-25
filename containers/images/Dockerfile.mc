@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.3.0-jv-alpha
+FROM kubelize/game-servers:0.3.7-jv-alpha
 
 # Set game name
 LABEL server="minecraft"

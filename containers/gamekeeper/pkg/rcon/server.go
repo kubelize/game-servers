@@ -1,79 +1,104 @@
 package rcon
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
-// StartGottyConsole starts a gotty web console that writes to the game server's stdin pipe
-// This allows web-based interaction while keeping kubectl logs working
-func StartGottyConsole(port, pipePath string) error {
-	// Create a script that forwards input to the game server pipe
-	script := fmt.Sprintf(`#!/bin/bash
-echo "GameKeeper Web Console - Connected to game server"
-echo "Type commands and press Enter to send to server"
-echo ""
-
-# Keep pipe open for writing
-exec 3> %s
-
-while IFS= read -r line; do
-  echo "$line" >&3
-  echo "[Sent: $line]" >&2
-done
-
-# Close pipe on exit
-exec 3>&-
-`, pipePath)
-
-	// Create temp script file
-	scriptPath := "/tmp/console-input.sh"
-	if err := os.WriteFile(scriptPath, []byte(script), 0755); err != nil {
-		return fmt.Errorf("failed to create console script: %w", err)
+// StartServerWithTmux runs the server in a tmux session with output piped to stdout
+// and gotty attached for web console access
+func StartServerWithTmux(port, sessionName, command string, args []string, workdir string) error {
+	// Build the command string
+	fullCmd := command + " " + strings.Join(args, " ")
+	
+	// Create log file for tmux output
+	logFile := filepath.Join(workdir, "console.log")
+	
+	// Create tmux session with the server
+	tmuxCmd := exec.Command("tmux", "new-session", "-d", "-s", sessionName,
+		"-c", workdir,  // working directory
+		fullCmd,
+	)
+	
+	if err := tmuxCmd.Run(); err != nil {
+		return fmt.Errorf("failed to start tmux session: %w", err)
 	}
-
-	// Start gotty wrapping the script
-	// -w: allow writes (input)
-	// -p: port
-	cmd := exec.Command("gotty", "-w", "-p", port, "/bin/bash", scriptPath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	if err := cmd.Start(); err != nil {
+	
+	// Pipe tmux output to log file for kubectl logs
+	pipeCmd := exec.Command("tmux", "pipe-pane", "-t", sessionName, 
+		fmt.Sprintf("cat >> %s", logFile))
+	if err := pipeCmd.Run(); err != nil {
+		return fmt.Errorf("failed to setup tmux pipe-pane: %w", err)
+	}
+	
+	// Start tailing the log file to stdout in background
+	go tailLogToStdout(logFile)
+	
+	// Start gotty that attaches to the tmux session
+	// This provides full bidirectional terminal access via web
+	gottyCmd := exec.Command("gotty",
+		"-w",              // allow writes (permit-write)
+		"-p", port,        // port
+		"--reconnect",
+		"--title-format", "Game Server Console",
+		"tmux", "attach-session", "-t", sessionName,
+	)
+	gottyCmd.Stdout = os.Stdout
+	gottyCmd.Stderr = os.Stderr
+	
+	if err := gottyCmd.Start(); err != nil {
 		return fmt.Errorf("failed to start gotty: %w", err)
 	}
 
 	fmt.Printf("  ℹ Web console available on port %s\n", port)
 	fmt.Printf("  ℹ Access via: kubectl port-forward <pod> %s:%s\n", port, port)
+	fmt.Printf("  ℹ Manual attach: kubectl exec -it <pod> -- tmux attach -t %s\n", sessionName)
 	
-	return nil
-}
-
-// CreateConsolePipe creates a named pipe for console input
-func CreateConsolePipe(pipePath string) error {
-	// Remove existing pipe if it exists
-	os.Remove(pipePath)
-	
-	// Create named pipe using mkfifo
-	cmd := exec.Command("mkfifo", pipePath)
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("failed to create pipe: %w", err)
-	}
-	
-	// Make it world-writable so gotty can write to it
-	if err := os.Chmod(pipePath, 0666); err != nil {
-		return fmt.Errorf("failed to chmod pipe: %w", err)
+	// Wait for tmux session to end
+	for {
+		checkCmd := exec.Command("tmux", "has-session", "-t", sessionName)
+		if err := checkCmd.Run(); err != nil {
+			// Session ended
+			break
+		}
+		// Check every 5 seconds
+		exec.Command("sleep", "5").Run()
 	}
 	
 	return nil
 }
 
-// OpenConsolePipe opens the named pipe for reading (as stdin)
-func OpenConsolePipe(pipePath string) (*os.File, error) {
-	pipe, err := os.OpenFile(pipePath, os.O_RDONLY, os.ModeNamedPipe)
+// tailLogToStdout continuously reads from log file and prints to stdout
+func tailLogToStdout(logFile string) {
+	// Wait for file to exist
+	for {
+		if _, err := os.Stat(logFile); err == nil {
+			break
+		}
+		exec.Command("sleep", "1").Run()
+	}
+	
+	// Open and tail the file
+	file, err := os.Open(logFile)
 	if err != nil {
-		return nil, fmt.Errorf("failed to open console pipe: %w", err)
+		fmt.Fprintf(os.Stderr, "Failed to open log file: %v\n", err)
+		return
 	}
-	return pipe, nil
+	defer file.Close()
+	
+	// Start from beginning to capture all output
+	reader := bufio.NewReader(file)
+	for {
+		line, err := reader.ReadString('\n')
+		if err != nil {
+			// No new content, wait a bit
+			exec.Command("sleep", "0").Run() // Small delay
+			continue
+		}
+		fmt.Print(line)
+	}
 }

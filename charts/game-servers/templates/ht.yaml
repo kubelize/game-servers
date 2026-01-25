@@ -82,4 +82,32 @@ data:
     HYTALE_COMPRESSION: "{{ .Values.serverConfig.HYTALE_COMPRESSION }}"
     HYTALE_WORLD: "{{ .Values.serverConfig.HYTALE_WORLD }}"
     HYTALE_GAMEMODE: "{{ .Values.serverConfig.HYTALE_GAMEMODE }}"
+
+    # CurseForge Mod Settings
+    {{- if .Values.curseforge }}
+    {{- if .Values.curseforge.mods }}
+    HYTALE_CURSEFORGE_MODS: "{{ .Values.curseforge.mods | join " " }}"
+    {{- end }}
+    HYTALE_CURSEFORGE_RELEASE_CHANNEL: "{{ .Values.curseforge.releaseChannel | default "release" }}"
+    HYTALE_CURSEFORGE_AUTO_UPDATE: "{{ .Values.curseforge.autoUpdate | default true }}"
+    HYTALE_CURSEFORGE_FAIL_ON_ERROR: "{{ .Values.curseforge.failOnError | default false }}"
+    HYTALE_CURSEFORGE_PRUNE: "{{ .Values.curseforge.prune | default false }}"
+    HYTALE_CURSEFORGE_GAME_VERSION_FILTER: "{{ .Values.curseforge.gameVersionFilter | default "" }}"
+    {{- end }}
+
+    # Web Console Settings
+    CONSOLE_PORT: "{{ .Values.serverConfig.CONSOLE_PORT | default "8080" }}"
+{{- end }}
+
+{{- if and .Values.curseforge .Values.curseforge.apiKeySecret }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "game-servers.fullname" . }}-curseforge
+  labels:
+    {{- include "game-servers.labels" . | nindent 4 }}
+type: Opaque
+stringData:
+  api-key: "{{ .Values.curseforge.apiKey }}"
 {{- end }}

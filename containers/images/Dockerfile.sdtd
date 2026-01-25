@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.3.0-ln-alpha
+FROM kubelize/game-servers:0.3.7-ln-alpha
 
 # Set game name
 LABEL server="seven_days_to_die"

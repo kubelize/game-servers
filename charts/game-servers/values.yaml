@@ -157,3 +157,16 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# CurseForge Mod Configuration (Hytale only)
+# Get API key from https://console.curseforge.com/
+curseforge: {}
+  # mods: []
+  # apiKeySecret:
+  #   name: "curseforge-api-key"
+  #   key: "api-key"
+  # releaseChannel: "release"
+  # autoUpdate: true
+  # failOnError: false
+  # prune: false
+  # gameVersionFilter: ""

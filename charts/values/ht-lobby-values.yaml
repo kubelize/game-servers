@@ -10,7 +10,7 @@ useStatefulSet: false
 image:
   repository: kubelize/game-servers
   pullPolicy: Always
-  tag: "0.2.0-ht-alpha"
+  tag: "0.2.8-ht-alpha"
 
 imagePullSecrets: []
 nameOverride: "hytale-lobby"
@@ -109,6 +109,39 @@ serverConfig:
   
   # ===== Web Console Settings =====
   CONSOLE_PORT: "8080"  # Gotty web console port
+
+# CurseForge Mod Configuration
+# To use CurseForge mods, you need an API key from https://console.curseforge.com/
+curseforge:
+  # List of mod references. Formats:
+  #   - "123456"         - Latest release of mod ID 123456
+  #   - "123456:789"     - Specific file ID 789 of mod 123456
+  #   - "123456@partial" - Latest file matching "partial" in name
+  mods:
+      - server-teleporters
+    # - "123456"
+    # - "789012:456789"
+  
+  # Reference to existing Kubernetes secret containing API key
+  # The secret should have a key named "api-key" with your CurseForge API key
+  apiKeySecret:
+    name: "curseforge-api-key"
+    key: "api-key"
+  
+  # Release channel: release, beta, alpha, or any
+  releaseChannel: "release"
+  
+  # Automatically update mods on server start
+  autoUpdate: true
+  
+  # Fail server startup if mod installation fails
+  failOnError: false
+  
+  # Remove mods that are no longer in the mods list
+  prune: false
+  
+  # Filter mods by game version (empty = any version)
+  gameVersionFilter: ""
 
 serviceAccount:
   create: true
