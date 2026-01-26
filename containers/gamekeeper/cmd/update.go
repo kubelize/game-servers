@@ -20,7 +20,7 @@ var updateCmd = &cobra.Command{
 
 func init() {
 	updateCmd.Flags().StringVar(&gameType, "game", "", "Game type")
-	updateCmd.Flags().StringVar(&configPath, "config", "./config-data/config-values.yaml", "Path to config values file")
+	updateCmd.Flags().StringVar(&configPath, "config", "/home/kubelize/config-data/config-values.yaml", "Path to config values file")
 	updateCmd.Flags().BoolVar(&checkOnly, "check-only", false, "Only check for updates, don't apply")
 	updateCmd.MarkFlagRequired("game")
 }
@@ -60,7 +60,7 @@ var validateCmd = &cobra.Command{
 
 func init() {
 	validateCmd.Flags().StringVar(&gameType, "game", "", "Game type")
-	validateCmd.Flags().StringVar(&configPath, "config", "./config-data/config-values.yaml", "Path to config values file")
+	validateCmd.Flags().StringVar(&configPath, "config", "/home/kubelize/config-data/config-values.yaml", "Path to config values file")
 	validateCmd.MarkFlagRequired("game")
 }
 

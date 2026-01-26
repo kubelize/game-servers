@@ -15,14 +15,14 @@ BUILDER ?= docker
 TAG_SUFFIX ?= -alpha
 
 # Version scheme: BASE_VERSION-{base_type}
-BASE_VERSION ?= 0.3.7
+BASE_VERSION ?= 0.3.8
 # Version scheme: GAME_VERSION-{game_ext}
 SDTD_VERSION ?= 0.4.0
 PW_VERSION ?= 0.2.0
 VH_VERSION ?= 0.2.0
 CE_VERSION ?= 0.2.0
 MC_VERSION ?= 0.2.0
-HT_VERSION ?= 0.2.8
+HT_VERSION ?= 0.2.9
 
 # Base images
 BASE_IMAGES = ln we jv

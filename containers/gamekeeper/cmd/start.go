@@ -31,7 +31,7 @@ var startCmd = &cobra.Command{
 
 func init() {
 	startCmd.Flags().StringVar(&gameType, "game", "", "Game type (hytale, conan-exiles, sdtd, palworld, valheim, minecraft)")
-	startCmd.Flags().StringVar(&configPath, "config", "./config-data/config-values.yaml", "Path to config values file")
+	startCmd.Flags().StringVar(&configPath, "config", "/home/kubelize/config-data/config-values.yaml", "Path to config values file")
 	startCmd.Flags().BoolVar(&skipUpdate, "skip-update", false, "Skip checking for game updates")
 	startCmd.Flags().BoolVar(&forceUpdate, "force-update", false, "Force update even if up to date")
 	startCmd.MarkFlagRequired("game")

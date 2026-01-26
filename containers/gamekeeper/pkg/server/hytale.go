@@ -42,7 +42,7 @@ func (h *HytaleManager) Setup() error {
 	return h.ensureDirectories(
 		h.BaseDir,
 		h.DataDir,
-		filepath.Join(h.BaseDir, "config-data"),
+		"/home/kubelize/config-data",
 	)
 }
 

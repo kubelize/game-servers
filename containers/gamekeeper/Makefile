@@ -11,7 +11,7 @@ build: build-linux
 
 build-linux:
 	@echo "Building GameKeeper for Linux..."
-	set GOOS=linux& set GOARCH=amd64& go build -ldflags "$(LDFLAGS)" -o gamekeeper .
+	GOOS=linux GOARCH=amd64 go build -ldflags "$(LDFLAGS)" -o gamekeeper .
 
 build-windows:
 	@echo "Building GameKeeper for Windows..."

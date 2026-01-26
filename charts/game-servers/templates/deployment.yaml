@@ -80,14 +80,14 @@ spec:
             {{- toYaml .Values.volumeMounts | nindent 12 }}
             {{- else }}
             - name: storage
-              mountPath: {{ if contains "ht" .Values.image.tag }}/home/kubelize/server{{ else }}/home/kubelize/server/data{{ end }}
+              mountPath: /home/kubelize/server
             {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) }}
             - name: server-config
-              mountPath: {{ if contains "ht" .Values.image.tag }}/home/kubelize/server/config-data/config-values.yaml{{ else }}/home/kubelize/steam/config-data/config-values.yaml{{ end }}
+              mountPath: /home/kubelize/config-data/config-values.yaml
               subPath: config-values.yaml
             {{- end }}
             - name: server-password
-              mountPath: {{ if contains "ht" .Values.image.tag }}/home/kubelize/server/config-data/serverpassword.yaml{{ else }}/home/kubelize/steam/config-data/serverpassword.yaml{{ end }}
+              mountPath: /home/kubelize/config-data/serverpassword.yaml
               subPath: serverpassword.yaml
             {{- end }}
       volumes:

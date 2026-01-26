@@ -31,9 +31,9 @@ if [ ! -f "eula.txt" ]; then
 fi
 
 # Generate server.properties if template exists
-if [ -f "/home/kubelize/gameserver/config-data/server.properties.template" ]; then
+if [ -f "/home/kubelize/config-data/server.properties.template" ]; then
     echo "Generating server.properties from template..."
-    gomplate -f /home/kubelize/gameserver/config-data/server.properties.template -o server.properties
+    gomplate -f /home/kubelize/config-data/server.properties.template -o server.properties
 fi
 
 # Start the server

@@ -144,7 +144,7 @@ volumes: []
 # Additional volumeMounts on the output Deployment definition.
 volumeMounts: []
   # - name: server-config
-  #   mountPath: "/home/kubelize/steam/config-data/config-values.yaml"
+#   mountPath: "/home/kubelize/config-data/config-values.yaml"
   #   subPath: "config-values.yaml"
 
 volumes: []

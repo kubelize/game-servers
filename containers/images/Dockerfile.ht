@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.3.7-jv-alpha
+FROM kubelize/game-servers:0.3.8-jv-alpha
 
 # Set game name
 LABEL server="hytale"
@@ -26,7 +26,8 @@ RUN apt remove --purge -y curl && \
 # Copy server config template to protected location (not overwritten by PVC mounts)
 COPY images/bin/hytale/serverconfig.template /usr/local/share/game-templates/serverconfig.template
 
-RUN chown -R kubelize:kubelize /home/kubelize/server
+RUN mkdir -p /home/kubelize/config-data && \
+    chown -R kubelize:kubelize /home/kubelize/server /home/kubelize/config-data
 
 WORKDIR /home/kubelize/server
 USER kubelize

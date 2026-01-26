@@ -64,8 +64,8 @@ gamekeeper mods install --name MyMod --version 1.2.3
 ## Configuration
 
 GameKeeper reads configuration from:
-- `/config-data/config-values.yaml` - Server settings (from ConfigMap)
-- `/config-data/mods.yaml` - Mod specifications (from ConfigMap)
+- `/home/kubelize/config-data/config-values.yaml` - Server settings (from ConfigMap)
+- `/home/kubelize/config-data/mods.yaml` - Mod specifications (from ConfigMap)
 - Environment variables - Runtime overrides
 
 Example mod configuration:

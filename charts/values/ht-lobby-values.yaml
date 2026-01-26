@@ -10,7 +10,7 @@ useStatefulSet: true
 image:
   repository: kubelize/game-servers
   pullPolicy: Always
-  tag: "0.2.8-ht-alpha"
+  tag: "0.2.9-ht-alpha"
 
 imagePullSecrets: []
 nameOverride: "hytale-lobby"
@@ -205,6 +205,36 @@ livenessProbe:
 readinessProbe:
   enabled: false
 
+
+# Volume mounts
+volumeMounts:
+  - name: storage
+    mountPath: /home/kubelize/server
+  - name: server-config
+    mountPath: /home/kubelize/config-data/config-values.yaml
+    subPath: config-values.yaml
+  - name: server-password
+    mountPath: /home/kubelize/config-data/serverpassword.yaml
+    subPath: serverpassword.yaml
+  - name: machine-id
+    mountPath: /etc/machine-id
+    subPath: machine-id
+    readOnly: true
+
+# Volumes
+volumes:
+  - name: server-config
+    configMap:
+      name: hytale-lobby-config
+  - name: server-password
+    secret:
+      secretName: hytale-lobby-server-password
+  - name: machine-id
+    configMap:
+      name: machine-id
+      items:
+        - key: machine-id
+          path: machine-id
 
 nodeSelector: {}
 affinity: {}

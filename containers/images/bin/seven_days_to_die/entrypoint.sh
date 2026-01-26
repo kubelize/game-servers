@@ -5,15 +5,15 @@ if [ ! -f /home/kubelize/server/sdtdconfig.xml ]; then
 
     echo "serverconfig.xml does not exist in server directory"
 
-    gomplate -f /home/kubelize/steam/config-data/serverconfig.template \
-            -d config=/home/kubelize/steam/config-data/config-values.yaml \
-            -d password=/home/kubelize/steam/config-data/serverpassword.yaml \
-            -o /home/kubelize/steam/config-data/serverconfig.xml
+    gomplate -f /home/kubelize/config-data/serverconfig.template \
+            -d config=/home/kubelize/config-data/config-values.yaml \
+            -d password=/home/kubelize/config-data/serverpassword.yaml \
+            -o /home/kubelize/config-data/serverconfig.xml
 
     echo "Rendered serverconfig"
     echo "adding the newly generated serverconfig.xml to server directory"
 
-    cp /home/kubelize/steam/config-data/serverconfig.xml /home/kubelize/server/sdtdconfig.xml 
+    cp /home/kubelize/config-data/serverconfig.xml /home/kubelize/server/sdtdconfig.xml 
     chmod +x /home/kubelize/server/sdtdconfig.xml
     echo "serverconfig.xml added to server directory"
 fi
