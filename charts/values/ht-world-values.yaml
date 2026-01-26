@@ -116,6 +116,10 @@ serverConfig:
 curseforge:
   mods:
     - server-teleporters
+    # - inventory-manager-api
+    - hyessentialsx
+    - perfect-parries
+    - elitemobs
   apiKeySecret:
     name: "curseforge-api-key"
     key: "api-key"

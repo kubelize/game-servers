@@ -5,7 +5,7 @@
 replicaCount: 1
 
 # Use Deployment for lobby (no need for stable network identity)
-useStatefulSet: false
+useStatefulSet: true
 
 image:
   repository: kubelize/game-servers
@@ -104,7 +104,7 @@ serverConfig:
   HYTALE_MAX_PLAYERS: "200"  # Can handle more since it's just a hub
   HYTALE_MAX_VIEW_RADIUS: "4"  # 128 blocks (minimal for lobby)
   HYTALE_COMPRESSION: "false"
-  HYTALE_WORLD: "default"  # Using custom lobby world
+  HYTALE_WORLD: "lobby"  # Using custom lobby world
   HYTALE_GAMEMODE: "Adventure"
   
   # ===== Web Console Settings =====
@@ -119,6 +119,8 @@ curseforge:
   #   - "123456@partial" - Latest file matching "partial" in name
   mods:
       - server-teleporters
+      - hyessentialsx
+    # - inventory-manager-api
     # - "123456"
     # - "789012:456789"
   
