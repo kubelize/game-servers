@@ -120,9 +120,10 @@ curseforge:
   mods:
       - server-teleporters
       - hyessentialsx
-    # - inventory-manager-api
-    # - "123456"
-    # - "789012:456789"
+      # - mdevtools-development-tools
+      # - inventory-manager-api
+      # - "123456"
+      # - "789012:456789"
   
   # Reference to existing Kubernetes secret containing API key
   # The secret should have a key named "api-key" with your CurseForge API key

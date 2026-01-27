@@ -120,6 +120,8 @@ curseforge:
     - hyessentialsx
     - perfect-parries
     - elitemobs
+    - yungs-hydungeons
+    # - mdevtools-development-tools
   apiKeySecret:
     name: "curseforge-api-key"
     key: "api-key"
@@ -160,8 +162,8 @@ gameService:
       targetPort: 5521
     - name: gameport-tcp
       protocol: TCP
-      port: 5521
-      targetPort: 5521
+      port: 5520
+      targetPort: 5520
 
 webService:
   enabled: true
