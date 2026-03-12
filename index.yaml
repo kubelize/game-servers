@@ -21,4 +21,14 @@ entries:
     urls:
     - https://github.com/kubelize/game-servers/releases/download/0.2.0/game-servers-0.2.0.tgz
     version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.0.1-alpha
+    created: "2026-01-27T18:57:45+01:00"
+    description: A Helm chart for Kubernetes
+    digest: 4c2d5f3715a3fbc63ed54b46a11520934b3dab38ee2d0aa792213f54f33f6c8e
+    name: game-servers
+    type: application
+    urls:
+    - https://github.com/kubelize/game-servers/releases/download/0.3.0/game-servers-0.3.0.tgz
+    version: 0.3.0
 generated: "2026-01-27T18:57:45+01:00"
