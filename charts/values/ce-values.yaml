@@ -1,0 +1,209 @@
+# Conan Exiles values for game-servers chart
+
+replicaCount: 1
+useStatefulSet: false
+
+image:
+  repository: kubelize/games
+  pullPolicy: Always
+  tag: "0.0.2-ce-alpha"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serverPasswordSecret:
+  useExisting: false
+  existingSecretName: ""
+
+# Conan server settings rendered into DefaultServerSettings.ini
+serverConfig:
+  PlayerFoodMultiplier: "1.000000"
+  PlayerWaterMultiplier: "1.000000"
+  PlayerIdleThirstMultiplier: "1.000000"
+  PlayerActiveThirstMultiplier: "1.000000"
+  PlayerOfflineThirstMultiplier: "0.000000"
+  PlayerIdleHungerMultiplier: "1.000000"
+  PlayerActiveHungerMultiplier: "1.000000"
+  PlayerOfflineHungerMultiplier: "0.000000"
+  ShieldDurabilityMultiplier: "1.000000"
+  NoOwnership: "False"
+  BuildingRadialDestructionForceMultiplier: "500.000000"
+  LogoutCharactersRemainInTheWorld: "True"
+  DurabilityMultiplier: "1.000000"
+  DropEquipmentOnDeath: "1"
+  EverybodyCanLootCorpse: "False"
+  TetheringMinLimit: "12000.0"
+  TetheringMaxLimit: "102000.0"
+  CoopTetheringLimit: "52000.0"
+  TetheringRangeDelta: "2000.0"
+  DayCycleSpeedScale: "1.000000"
+  DayTimeSpeedScale: "1.000000"
+  NightTimeSpeedScale: "1.000000"
+  DawnDuskSpeedScale: "1.000000"
+  ClientCatchUpTime: "10.000000"
+  UseClientCatchUpTime: "True"
+  PlayerHealthMultiplier: "1.000000"
+  PlayerStaminaMultiplier: "1.000000"
+  StaminaCostMultiplier: "1.000000"
+  ItemSpoilRateScale: "1.000000"
+  HarvestAmountMultiplier: "1.000000"
+  ResourceRespawnSpeedMultiplier: "1.000000"
+  NPCMindReadingMode: "None"
+  MaxNudity: "None"
+  ServerCommunity: "Relaxed"
+  ChatHasGlobal: "True"
+  ChatLocalRadius: "5000.000000"
+  ChatMaxMessageLength: "512"
+  ChatFloodControlAheadCounter: "10"
+  EnableSandStorm: "True"
+  ClanMaxSize: "30"
+  IsLoadErrorsFatal: "False"
+  ConfigVersion: "2"
+  BlueprintConfigVersion: "1"
+  IPBlackList: '("8.8.8.8","8.8.4.4")'
+  PurgeLevel: "6"
+  PurgeDelay: "5"
+  RestrictPurgeTime: "false"
+  PurgeRestrictionWeekdayStart: "1800"
+  PurgeRestrictionWeekdayEnd: "2200"
+  PurgeRestrictionWeekendStart: "1800"
+  PurgeRestrictionWeekendEnd: "2200"
+  MinPurgeOnlinePlayers: "1"
+  ClanPurgeTrigger: "42000"
+  ClanScoreUpateFrequency: "15"
+  PurgeDuration: "30"
+  PurgePreparationTime: "10"
+  AllowBuilding: "False"
+  EnablePurge: "True"
+  PurgeNPCBuildingDamageMultiplier: "(5.0, 5.0, 10.0, 15.0, 20.0, 25.0)"
+  PlayerBuildingDamageMultiplier: "0.01"
+  OverrideDecayMaxBuildingPieces: "6"
+  OverrideDecayTime: "3600"
+  EnableWhitelist: "False"
+  EnableBanCheck: "True"
+  StormEnabled: "true"
+  ElderThingsEnabled: "true"
+  ElderThingsIdleLifespan: "30.000000"
+  SiegeElderThingsEnabled: "false"
+  StormCooldown: "105.000000"
+  StormAccumulationTime: "1.000000"
+  StormDuration: "15.000000"
+  StormDissipationTime: "1.000000"
+  StormEnduranceDrainMultiplier: "0.000000"
+  ElderThingSpawnRate: "1.000000"
+  StormTimeWeekdayStart: "0000"
+  StormTimeWeekdayEnd: "2359"
+  StormTimeWeekendStart: "0000"
+  StormTimeWeekendEnd: "2359"
+  StormMinimumOnlinePlayers: "0"
+  StormBuildingAllowed: "true"
+  StormMapBlocker: "true"
+  ElderThingSiegeDamageMultiplier: "1.000000"
+  MinimumBuildingSizeToBeSieged: "41"
+  AmbientElderThingRespawnRate: "1.000000"
+  SiegeElderThingRespawnRate: "1.000000"
+  StormBuildingDamageRateMultiplier: "1.000000"
+  MaxAmbientElderThings: "700"
+  MaxSiegeElderThings: "5"
+  MaxAmbushElderThings: "200"
+  ElderThingSiegeBuildingSizeMultiplier: "1.000000"
+  StormBuildingDamageEnabled: "false"
+  SiegeElderThingMapMarkers: "false"
+  MinimumStormDamageBuildingPieces: "0"
+  StormBuildingDamageMultiplier: "1.000000"
+  VaultRefreshTime: "10"
+  VaultRefreshDeviation: "2"
+  SurgeDeviationMin: "60"
+  SurgeDeviationMax: "60"
+  SurgeSacrificeRequirementMultiplier: "1.000000"
+  SurgeDespawnTimer: "90"
+  AltarModuleActiveTimeMultiplier: "1.000000"
+  RandomSurgesCountMin: "6"
+  RandomSurgesCountMax: "10"
+  DecoupleSurgeFromStorm: "false"
+  DecoupledSurgeCooldown: "5"
+  EnableBuildingDestructionCapsules: "false"
+  ServerTransferEnabled: "true"
+  CanImportDirectlyFromSameServer: "true"
+  FeatsBlacklist: ""
+  BuildingPVPWhitelist: '("80901", "80111", "80112", "80915", "80912")'
+
+serviceAccount:
+  create: true
+  automount: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+# Conan Exiles default ports
+# - Game port: 7777/UDP
+# - Seamless travel: 7778/UDP
+# - Steam query: 27015/UDP
+gameService:
+  type: LoadBalancer
+  ports:
+    - name: game-udp
+      protocol: UDP
+      port: 7777
+      targetPort: 7777
+    - name: travel-udp
+      protocol: UDP
+      port: 7778
+      targetPort: 7778
+    - name: query-udp
+      protocol: UDP
+      port: 27015
+      targetPort: 27015
+
+webService:
+  enabled: false
+  type: ClusterIP
+  ports:
+    - name: webadmin
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+
+livenessProbe:
+  enabled: false
+  config:
+    httpGet:
+      path: /healthz
+      port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
+
+readinessProbe:
+  enabled: false
+  config:
+    httpGet:
+      path: /readiness
+      port: 8080
+    initialDelaySeconds: 3
+    periodSeconds: 3
+
+volumeMounts: []
+volumes: []
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

@@ -83,7 +83,7 @@ spec:
             {{- else }}
             - name: storage
               mountPath: /home/kubelize/server
-            {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) }}
+            {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) (contains "ce" .Values.image.tag) }}
             - name: server-config
               mountPath: /home/kubelize/config-data/config-values.yaml
               subPath: config-values.yaml
@@ -96,7 +96,7 @@ spec:
         {{- if .Values.volumes }}
         {{- toYaml .Values.volumes | nindent 8 }}
         {{- else }}
-        {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) }}
+        {{- if or (contains "sdtd" .Values.image.tag) (contains "ht" .Values.image.tag) (contains "ce" .Values.image.tag) }}
         - name: server-config
           configMap:
             name: {{ include "game-servers.fullname" . }}-config

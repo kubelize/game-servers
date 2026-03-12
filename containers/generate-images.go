@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 	"text/template"
+
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 )
 
 // Environment represents the structure for each Environment configuration in the YAML file
@@ -37,12 +37,13 @@ type TemplateData struct {
 
 func main() {
 	// Parse command-line flags
+	registry := flag.String("registry", "kubelize/games", "Container registry/repository (e.g., kubelize/games)")
 	baseVersion := flag.String("base-version", "0.2.3", "Base image version")
 	tagSuffix := flag.String("tag-suffix", "", "Tag suffix (e.g., -alpha, -beta)")
 	flag.Parse()
 
 	// Load the YAML file
-	data, err := ioutil.ReadFile("environment.yaml")
+	data, err := os.ReadFile("environment.yaml")
 	if err != nil {
 		fmt.Printf("Error reading YAML file: %v\n", err)
 		return
@@ -64,7 +65,7 @@ func main() {
 	}
 
 	// Load the Dockerfile template from file
-	templateContent, err := ioutil.ReadFile("Dockerfile.j2")
+	templateContent, err := os.ReadFile("Dockerfile.j2")
 	if err != nil {
 		fmt.Printf("Error reading template file: %v\n", err)
 		return
@@ -79,7 +80,7 @@ func main() {
 
 	// Generate Dockerfiles for each environment
 	for _, environment := range config.Environment {
-		baseDockerfile := fmt.Sprintf("kubelize/game-servers:%s-%s%s", *baseVersion, environment.Base, *tagSuffix)
+		baseDockerfile := fmt.Sprintf("%s:%s-%s%s", *registry, *baseVersion, environment.Base, *tagSuffix)
 		outputFileName := fmt.Sprintf("Dockerfile.%s", environment.DockerfileExt)
 
 		// Create the output file

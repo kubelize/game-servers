@@ -46,9 +46,9 @@ func NewManager(gameType string, cfg *config.Config) (Manager, error) {
 	switch gameType {
 	case "hytale":
 		return NewHytaleManager(cfg), nil
-	case "conan-exiles", "ce":
+	case "conan-exiles", "conan_exiles", "ce":
 		return NewSteamManager(cfg, "conan-exiles", 443030), nil
-	case "seven-days-to-die", "sdtd":
+	case "seven-days-to-die", "seven_days_to_die", "sdtd":
 		return NewSteamManager(cfg, "sdtd", 294420), nil
 	case "palworld":
 		return NewSteamManager(cfg, "palworld", 2394010), nil

@@ -1,5 +1,5 @@
 # Base Dockerfile
-FROM kubelize/game-servers:0.3.8-ln-alpha
+FROM kubelize/games:0.0.2-ln-alpha
 
 # Set game name
 LABEL server="valheim"

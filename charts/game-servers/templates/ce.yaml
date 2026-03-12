@@ -2,8 +2,12 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: server-config
+  name: {{ include "game-servers.fullname" . }}-config
+  labels:
+    {{- include "game-servers.labels" . | nindent 4 }}
 data:
   config-values.yaml: |
-
+{{- if .Values.serverConfig }}
+{{ toYaml .Values.serverConfig | nindent 4 }}
+{{- end }}
 {{- end }}
